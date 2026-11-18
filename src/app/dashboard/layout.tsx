@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect } from "react";
@@ -5,10 +6,6 @@ import { useRouter } from "next/navigation";
 import { authClient, type SessionUser } from "@/lib/auth-client";
 import DashboardShell from "@/components/dashboard/dashboard-shell";
 
-/**
- * Every /dashboard/* page is protected: visitors who are not signed in
- * are sent to /sign-in and come back here afterwards.
- */
 export default function DashboardLayout({
   children,
 }: {
@@ -19,14 +16,24 @@ export default function DashboardLayout({
   const user = session?.user as SessionUser | undefined;
 
   useEffect(() => {
-    if (!isPending && !user) {
+    if (isPending) return;
+
+    if (!user) {
       router.replace("/sign-in?next=/dashboard");
+      return;
+    }
+
+    if (user.role === "admin") {
+      router.replace("/admin");
+      return;
+    }
+
+    if (user.role !== "customer") {
+      router.replace("/");
     }
   }, [isPending, user, router]);
 
-  // Session still loading (or redirecting) — show a neutral placeholder
-  // instead of flashing unauthorised content.
-  if (isPending || !user) {
+  if (isPending || !user || user.role !== "customer") {
     return (
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
         <div className="grid gap-6 lg:grid-cols-[240px_1fr]">

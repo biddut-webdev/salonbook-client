@@ -12,6 +12,10 @@ import {
   ShieldCheck,
   User,
   X,
+  Scissors,
+  PlusCircle,
+  Users,
+  CreditCard,
   type LucideIcon,
 } from "lucide-react";
 import { authClient, type SessionUser } from "@/lib/auth-client";
@@ -27,26 +31,70 @@ type NavLink = {
 
 // Sidebar entries. A link only shows up for the roles listed here.
 const NAV_LINKS: NavLink[] = [
+  // Customer Dashboard
   {
     href: "/dashboard",
     label: "Overview",
     icon: LayoutDashboard,
-    roles: ["customer", "admin"],
+    roles: ["customer"],
   },
   {
     href: "/dashboard/appointments",
-    label: "Appointments",
+    label: "My Appointments",
     icon: CalendarDays,
-    roles: ["customer", "admin"],
+    roles: ["customer"],
   },
   {
     href: "/dashboard/profile",
-    label: "Profile",
+    label: "My Profile",
     icon: User,
-    roles: ["customer", "admin"],
+    roles: ["customer"],
+  },
+
+  // Admin Dashboard
+  {
+    href: "/admin",
+    label: "Overview",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+  },
+  {
+    href: "/admin/services",
+    label: "Manage Services",
+    icon: Scissors,
+    roles: ["admin"],
+  },
+  {
+    href: "/admin/services/new",
+    label: "Add/Update Service",
+    icon: PlusCircle,
+    roles: ["admin"],
+  },
+  {
+    href: "/admin/appointments",
+    label: "Manage Appointments",
+    icon: CalendarDays,
+    roles: ["admin"],
+  },
+  {
+    href: "/admin/users",
+    label: "Manage Users",
+    icon: Users,
+    roles: ["admin"],
+  },
+  {
+    href: "/admin/transactions",
+    label: "Transactions",
+    icon: CreditCard,
+    roles: ["admin"],
+  },
+  {
+    href: "/admin/profile",
+    label: "My Profile",
+    icon: User,
+    roles: ["admin"],
   },
 ];
-
 export default function DashboardShell({
   user,
   children,
