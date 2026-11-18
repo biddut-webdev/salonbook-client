@@ -1,4 +1,10 @@
-import type { CategoryInfo, Service } from "@/types";
+import type {
+  AdminStats,
+  Appointment,
+  AppointmentStatus,
+  CategoryInfo,
+  Service,
+} from "@/types";
 
 // Base URL of the Express API (server-side and client-side both read this).
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -82,4 +88,81 @@ export async function createAppointment(
   }
 
   return body.data as AppointmentPayload & { _id: string; status: string };
+}
+
+/**
+ * Authenticated request helper: sends the Better Auth JWT and unwraps
+ * the `{ success, data }` envelope used by the Express API.
+ */
+async function authFetch<T>(
+  token: string,
+  path: string,
+  init: RequestInit = {},
+): Promise<T> {
+  const response = await fetch(`${API_URL}${path}`, {
+    cache: "no-store",
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      ...init.headers,
+    },
+  });
+
+  const body = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new Error(body?.message || `Request failed (${response.status})`);
+  }
+
+  return body.data as T;
+}
+
+// --- Customer dashboard ---
+
+export function getMyAppointments(token: string) {
+  return authFetch<Appointment[]>(token, "/api/appointments/mine");
+}
+
+export function cancelAppointment(token: string, id: string) {
+  return authFetch<Appointment>(token, `/api/appointments/${id}/cancel`, {
+    method: "PATCH",
+  });
+}
+
+// --- Admin dashboard ---
+
+export type AdminAppointmentQuery = {
+  status?: AppointmentStatus | "";
+  search?: string;
+};
+
+export function getAllAppointments(
+  token: string,
+  { status, search }: AdminAppointmentQuery = {},
+) {
+  const params = new URLSearchParams();
+  if (status) params.set("status", status);
+  if (search) params.set("search", search);
+
+  const query = params.toString();
+  return authFetch<Appointment[]>(
+    token,
+    `/api/appointments${query ? `?${query}` : ""}`,
+  );
+}
+
+export function getAdminStats(token: string) {
+  return authFetch<AdminStats>(token, "/api/appointments/stats");
+}
+
+export function updateAppointmentStatus(
+  token: string,
+  id: string,
+  status: AppointmentStatus,
+) {
+  return authFetch<Appointment>(token, `/api/appointments/${id}/status`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
 }
