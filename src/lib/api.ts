@@ -1,0 +1,33 @@
+import type { CategoryInfo, Service } from "@/types";
+
+// Base URL of the Express API (server-side and client-side both read this).
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+/** Small wrapper around fetch that returns the API body and throws on errors. */
+async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(`${API_URL}${path}`, init);
+
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    throw new Error(body?.message || `Request failed (${response.status})`);
+  }
+
+  const body = await response.json();
+  return body.data as T;
+}
+
+// Public data is cached briefly so a Home page refresh does not hit the API
+// on every request, while still showing recent changes.
+const publicOptions = { next: { revalidate: 60 } };
+
+export function getFeaturedServices(limit = 6) {
+  return apiFetch<Service[]>(`/api/services?limit=${limit}`, publicOptions);
+}
+
+export function getCategories() {
+  return apiFetch<CategoryInfo[]>("/api/services/categories", publicOptions);
+}
+
+export function getService(id: string) {
+  return apiFetch<Service>(`/api/services/${id}`, publicOptions);
+}
