@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Sparkles,
 } from "lucide-react";
+import AdminStats from "@/components/dashboard/admin-stats";
 
 const stats = [
   {
@@ -117,38 +118,8 @@ export default function AdminOverviewPage() {
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {stats.map((stat) => (
-            <div
-              key={stat.title}
-              className="group rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
-            >
-              <div className="flex items-center justify-between">
-                <div
-                  className={`flex size-12 items-center justify-center rounded-xl ${stat.color}`}
-                >
-                  <stat.icon className="size-5" />
-                </div>
+        <AdminStats />
 
-                <ArrowUpRight className="size-4 text-muted-foreground transition group-hover:text-primary" />
-              </div>
-
-              <div className="mt-5">
-                <p className="text-sm font-medium text-muted-foreground">
-                  {stat.title}
-                </p>
-
-                <h3 className="mt-2 text-3xl font-bold tracking-tight">
-                  {stat.value}
-                </h3>
-
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {stat.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
       </section>
 
       {/* Quick Actions */}
