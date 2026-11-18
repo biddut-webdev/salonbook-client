@@ -50,3 +50,36 @@ export function getCategories() {
 export function getService(id: string) {
   return apiFetch<Service>(`/api/services/${id}`, publicOptions);
 }
+
+export type AppointmentPayload = {
+  serviceId: string;
+  appointmentDate: string; // YYYY-MM-DD
+  timeSlot: string;
+  message?: string;
+};
+
+/**
+ * Creates an appointment request. Requires the JWT from Better Auth,
+ * which the Express API verifies and checks the role against.
+ */
+export async function createAppointment(
+  token: string,
+  payload: AppointmentPayload,
+) {
+  const response = await fetch(`${API_URL}/api/appointments`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const body = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new Error(body?.message || "Could not create the appointment.");
+  }
+
+  return body.data as AppointmentPayload & { _id: string; status: string };
+}
