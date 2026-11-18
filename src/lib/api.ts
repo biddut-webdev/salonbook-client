@@ -24,6 +24,25 @@ export function getFeaturedServices(limit = 6) {
   return apiFetch<Service[]>(`/api/services?limit=${limit}`, publicOptions);
 }
 
+export type ServiceQuery = {
+  search?: string;
+  category?: string;
+  sort?: string;
+};
+
+export function getServices({ search, category, sort }: ServiceQuery = {}) {
+  const params = new URLSearchParams();
+  if (search) params.set("search", search);
+  if (category) params.set("category", category);
+  if (sort) params.set("sort", sort);
+
+  const query = params.toString();
+  return apiFetch<Service[]>(
+    `/api/services${query ? `?${query}` : ""}`,
+    publicOptions,
+  );
+}
+
 export function getCategories() {
   return apiFetch<CategoryInfo[]>("/api/services/categories", publicOptions);
 }
