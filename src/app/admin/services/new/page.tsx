@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Loader2, Plus } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 
@@ -30,10 +30,10 @@ const AddServicePage = () => {
     description: "",
     price: "",
     duration: "",
-    image: "",
     status: "active",
   });
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -97,6 +97,26 @@ const AddServicePage = () => {
     }));
   };
 
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file.");
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size must be less than 5MB.");
+      event.target.value = "";
+      return;
+    }
+
+    setSelectedImage(file);
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -107,6 +127,18 @@ const AddServicePage = () => {
         throw new Error("Please select a category.");
       }
 
+      if (!selectedImage) {
+        throw new Error("Please upload a service image.");
+      }
+
+      if (Number(formData.price) <= 0) {
+        throw new Error("Price must be greater than 0.");
+      }
+
+      if (Number(formData.duration) <= 0) {
+        throw new Error("Duration must be greater than 0.");
+      }
+
       const result = await authClient.token();
       const token = result.data?.token;
 
@@ -114,6 +146,28 @@ const AddServicePage = () => {
         throw new Error("Authentication token not found.");
       }
 
+      // Step 1: Upload image
+      const imageFormData = new FormData();
+      imageFormData.append("image", selectedImage);
+
+      const imageResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/services/upload-image`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: imageFormData,
+        }
+      );
+
+      const imageResult = await imageResponse.json();
+
+      if (!imageResponse.ok || !imageResult.success || !imageResult.imageUrl) {
+        throw new Error(imageResult.message || "Image upload failed.");
+      }
+
+      // Step 2: Save service with uploaded image URL
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/services`,
         {
@@ -126,6 +180,7 @@ const AddServicePage = () => {
             ...formData,
             price: Number(formData.price),
             duration: Number(formData.duration),
+            image: imageResult.imageUrl,
           }),
         }
       );
@@ -269,7 +324,7 @@ const AddServicePage = () => {
               id="price"
               name="price"
               type="number"
-              min="0"
+              min="0.01"
               step="0.01"
               placeholder="e.g. 500"
               value={formData.price}
@@ -292,6 +347,7 @@ const AddServicePage = () => {
               name="duration"
               type="number"
               min="1"
+              step="1"
               placeholder="e.g. 45"
               value={formData.duration}
               onChange={handleChange}
@@ -301,26 +357,51 @@ const AddServicePage = () => {
           </div>
         </div>
 
-        {/* Image */}
+
+        {/* Image Upload */}
         <div className="space-y-2">
           <label
             htmlFor="image"
             className="text-sm font-semibold text-gray-700"
           >
-            Image URL *
+            Service Image *
           </label>
 
           <input
             id="image"
-            name="image"
-            type="url"
-            placeholder="https://example.com/image.jpg"
-            value={formData.image}
-            onChange={handleChange}
-            required
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            type="file"
+            accept="image/png,image/jpeg,image/jpg,image/webp"
+            onChange={handleImageChange}
+            required={!selectedImage}
+            className="block w-full cursor-pointer rounded-xl border border-gray-200 bg-white text-sm text-gray-600 file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-600 file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-violet-700"
           />
+
+          <p className="text-xs text-gray-500">
+            PNG, JPG, JPEG or WEBP (Maximum 5MB)
+          </p>
+
+          {selectedImage && (
+            <div className="flex items-center justify-between rounded-xl border border-violet-100 bg-violet-50 px-4 py-3">
+              <span className="truncate text-sm text-gray-700">
+                {selectedImage.name}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedImage(null);
+                  const input = document.getElementById("image") as HTMLInputElement;
+                  input.value = "";
+                }}
+                className="ml-3 rounded-lg p-1 text-gray-500 hover:text-red-500"
+                aria-label="Remove selected image"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          )}
         </div>
+
 
         {/* Status */}
         <div className="space-y-2">

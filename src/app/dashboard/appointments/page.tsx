@@ -2,9 +2,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CalendarDays, Clock, Loader2, XCircle } from "lucide-react";
+import {
+  CalendarDays,
+  Clock,
+  Loader2,
+  XCircle,
+  CreditCard,
+} from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type Appointment = {
   _id: string;
@@ -28,6 +35,7 @@ export default function MyAppointmentsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [payingId, setPayingId] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Fetch appointments
@@ -130,15 +138,67 @@ export default function MyAppointmentsPage() {
         );
       }
 
+      toast.success("Appointment cancelled successfully.");
       setRefreshKey((prev) => prev + 1);
     } catch (err) {
-      alert(
+      toast.error(
         err instanceof Error
           ? err.message
           : "Something went wrong."
       );
     } finally {
       setCancellingId(null);
+    }
+  }
+
+  // Create Stripe Checkout Session
+  async function handlePayment(id: string) {
+    try {
+      setPayingId(id);
+
+      const { data: tokenData, error: tokenError } =
+        await authClient.token();
+
+      if (tokenError || !tokenData?.token) {
+        throw new Error("Authentication token not found.");
+      }
+
+      const response = await fetch(
+        `${API_URL}/api/payments/create-checkout-session`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenData.token}`,
+          },
+          body: JSON.stringify({
+            appointmentId: id,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message || "Failed to initialize payment."
+        );
+      }
+
+      if (!result.checkoutUrl) {
+        throw new Error("Stripe checkout URL not found.");
+      }
+
+      // Redirect customer to Stripe Checkout
+      window.location.assign(result.checkoutUrl);
+    } catch (err) {
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Payment initialization failed."
+      );
+
+      setPayingId(null);
     }
   }
 
@@ -260,29 +320,52 @@ export default function MyAppointmentsPage() {
                 </div>
               </div>
 
-              {/* Price and Action */}
+              {/* Price and Actions */}
               <div className="flex flex-row items-center justify-between gap-3 border-t pt-4 sm:flex-col sm:items-end sm:border-0 sm:pt-0">
                 <p className="text-xl font-bold">
                   ${appointment.servicePrice}
                 </p>
 
-                {appointment.status === "pending" && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="max-w-full text-destructive hover:text-destructive"
-                    disabled={cancellingId === appointment._id}
-                    onClick={() => handleCancel(appointment._id)}
-                  >
-                    {cancellingId === appointment._id ? (
-                      <Loader2 className="size-4 animate-spin" />
-                    ) : (
-                      <XCircle className="size-4" />
+                <div className="flex flex-wrap justify-end gap-2">
+                  {/* Pay Now */}
+                  {appointment.status === "confirmed" &&
+                    appointment.paymentStatus === "unpaid" && (
+                      <Button
+                        size="sm"
+                        disabled={payingId === appointment._id}
+                        onClick={() => handlePayment(appointment._id)}
+                      >
+                        {payingId === appointment._id ? (
+                          <Loader2 className="size-4 animate-spin" />
+                        ) : (
+                          <CreditCard className="size-4" />
+                        )}
+
+                        {payingId === appointment._id
+                          ? "Redirecting..."
+                          : "Pay Now"}
+                      </Button>
                     )}
 
-                    Cancel Appointment
-                  </Button>
-                )}
+                  {/* Cancel Appointment */}
+                  {appointment.status === "pending" && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="max-w-full text-destructive hover:text-destructive"
+                      disabled={cancellingId === appointment._id}
+                      onClick={() => handleCancel(appointment._id)}
+                    >
+                      {cancellingId === appointment._id ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <XCircle className="size-4" />
+                      )}
+
+                      Cancel Appointment
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

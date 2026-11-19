@@ -12,6 +12,7 @@ import {
   Trash2,
   Scissors,
   Loader2,
+  Power,
 } from "lucide-react";
 import {
   AlertDialog,
@@ -41,11 +42,55 @@ const AdminServicesPage = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+  // Load all services for admin
+  const loadServices = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const result = await authClient.token();
+      const token = result.data?.token;
+
+      if (!token) {
+        throw new Error("Authentication token not found.");
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/services/admin/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Failed to load services.");
+      }
+
+      if (!Array.isArray(data.data)) {
+        throw new Error("Invalid services response from server.");
+      }
+
+      setServices(data.data);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Something went wrong.";
+
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     let ignore = false;
 
-    const loadServices = async () => {
+    const fetchServices = async () => {
       try {
         const result = await authClient.token();
         const token = result.data?.token;
@@ -55,7 +100,7 @@ const AdminServicesPage = () => {
         }
 
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/services`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/services/admin/all`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -69,6 +114,10 @@ const AdminServicesPage = () => {
           throw new Error(data.message || "Failed to load services.");
         }
 
+        if (!Array.isArray(data.data)) {
+          throw new Error("Invalid services response from server.");
+        }
+
         if (!ignore) {
           setServices(data.data);
           setError("");
@@ -76,7 +125,9 @@ const AdminServicesPage = () => {
       } catch (err) {
         if (!ignore) {
           setError(
-            err instanceof Error ? err.message : "Something went wrong."
+            err instanceof Error
+              ? err.message
+              : "Something went wrong."
           );
         }
       } finally {
@@ -86,20 +137,15 @@ const AdminServicesPage = () => {
       }
     };
 
-    loadServices();
+    fetchServices();
 
     return () => {
       ignore = true;
     };
   }, []);
 
-  const handleRetry = () => {
-    window.location.reload();
-  };
-
+  // Delete service
   const handleDelete = async (id: string) => {
-
-
     try {
       const result = await authClient.token();
       const token = result.data?.token;
@@ -136,8 +182,68 @@ const AdminServicesPage = () => {
     }
   };
 
+  // Activate or deactivate service
+  const handleToggleStatus = async (service: Service) => {
+    const newStatus =
+      service.status === "active" ? "inactive" : "active";
+
+    try {
+      setUpdatingId(service._id);
+
+      const result = await authClient.token();
+      const token = result.data?.token;
+
+      if (!token) {
+        throw new Error("Authentication token not found.");
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/services/${service._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            status: newStatus,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || data.success === false) {
+        throw new Error(data.message || "Failed to update service status.");
+      }
+
+      setServices((previous) =>
+        previous.map((item) =>
+          item._id === service._id
+            ? { ...item, status: newStatus }
+            : item
+        )
+      );
+
+      toast.success(
+        newStatus === "active"
+          ? "Service activated successfully!"
+          : "Service deactivated successfully!"
+      );
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Something went wrong."
+      );
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  // Search services
   const filteredServices = services.filter((service) =>
-    service.serviceName.toLowerCase().includes(search.toLowerCase())
+    `${service.serviceName} ${service.category}`
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
 
   return (
@@ -161,6 +267,30 @@ const AdminServicesPage = () => {
           <Plus size={18} />
           Add New Service
         </Link>
+      </div>
+
+      {/* Statistics */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+          <p className="text-sm text-gray-500">Total Services</p>
+          <h2 className="mt-2 text-2xl font-bold text-gray-900">
+            {services.length}
+          </h2>
+        </div>
+
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+          <p className="text-sm text-gray-500">Active Services</p>
+          <h2 className="mt-2 text-2xl font-bold text-green-600">
+            {services.filter((service) => service.status === "active").length}
+          </h2>
+        </div>
+
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+          <p className="text-sm text-gray-500">Inactive Services</p>
+          <h2 className="mt-2 text-2xl font-bold text-gray-500">
+            {services.filter((service) => service.status === "inactive").length}
+          </h2>
+        </div>
       </div>
 
       {/* Search */}
@@ -194,7 +324,7 @@ const AdminServicesPage = () => {
           <p>{error}</p>
 
           <button
-            onClick={handleRetry}
+            onClick={loadServices}
             className="mt-3 font-semibold underline"
           >
             Try again
@@ -218,7 +348,7 @@ const AdminServicesPage = () => {
       ) : (
         <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[750px] text-left">
+            <table className="w-full min-w-[950px] text-left">
               <thead className="bg-gray-50 text-xs uppercase text-gray-500">
                 <tr>
                   <th className="px-6 py-4">Service</th>
@@ -226,6 +356,7 @@ const AdminServicesPage = () => {
                   <th className="px-6 py-4">Price</th>
                   <th className="px-6 py-4">Duration</th>
                   <th className="px-6 py-4">Status</th>
+                  <th className="px-6 py-4 text-center">Availability</th>
                   <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
@@ -234,8 +365,9 @@ const AdminServicesPage = () => {
                 {filteredServices.map((service) => (
                   <tr
                     key={service._id}
-                    className="hover:bg-gray-50"
+                    className="transition hover:bg-gray-50"
                   >
+                    {/* Service */}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         {service.image ? (
@@ -256,29 +388,57 @@ const AdminServicesPage = () => {
                       </div>
                     </td>
 
+                    {/* Category */}
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {service.category}
                     </td>
 
+                    {/* Price */}
                     <td className="px-6 py-4 text-sm font-semibold text-gray-800">
                       ৳{service.price}
                     </td>
 
+                    {/* Duration */}
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {service.duration} min
                     </td>
 
+                    {/* Status */}
                     <td className="px-6 py-4">
                       <span
                         className={`rounded-full px-3 py-1 text-xs font-semibold ${service.status === "active"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-600"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-600"
                           }`}
                       >
                         {service.status}
                       </span>
                     </td>
 
+                    {/* Activate / Deactivate */}
+                    <td className="px-6 py-4 text-center">
+                      <button
+                        type="button"
+                        onClick={() => handleToggleStatus(service)}
+                        disabled={updatingId === service._id}
+                        className={`inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${service.status === "active"
+                            ? "bg-red-50 text-red-600 hover:bg-red-100"
+                            : "bg-green-50 text-green-600 hover:bg-green-100"
+                          }`}
+                      >
+                        {updatingId === service._id ? (
+                          <Loader2 size={15} className="animate-spin" />
+                        ) : (
+                          <Power size={15} />
+                        )}
+
+                        {service.status === "active"
+                          ? "Deactivate"
+                          : "Activate"}
+                      </button>
+                    </td>
+
+                    {/* Actions */}
                     <td className="px-6 py-4">
                       <div className="flex justify-end gap-2">
                         <Link
@@ -292,7 +452,7 @@ const AdminServicesPage = () => {
                         <AlertDialog>
                           <AlertDialogTrigger
                             type="button"
-                            className="..."
+                            className="rounded-lg border border-red-100 p-2 text-red-500 transition hover:bg-red-50"
                             title="Delete service"
                           >
                             <Trash2 size={17} />
@@ -305,8 +465,9 @@ const AdminServicesPage = () => {
                               </AlertDialogTitle>
 
                               <AlertDialogDescription>
-                                Are you sure you want to delete &quot;{service.serviceName}&quot;?
-                                This action cannot be undone.
+                                Are you sure you want to delete &quot;
+                                {service.serviceName}&quot;? This action
+                                cannot be undone.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
 
@@ -335,9 +496,11 @@ const AdminServicesPage = () => {
       )}
 
       {/* Total Services */}
-      <p className="text-sm text-gray-500">
-        Total services: {services.length}
-      </p>
+      {!loading && !error && (
+        <p className="text-sm text-gray-500">
+          Showing {filteredServices.length} of {services.length} services
+        </p>
+      )}
     </div>
   );
 };
