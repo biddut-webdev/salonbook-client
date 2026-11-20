@@ -7,8 +7,10 @@ role-based dashboard.
 
 This repository contains the **Next.js (App Router) frontend**.
 
-- **Live site:** https://salonbook-client.vercel.app _(replace with your deployment URL)_
-- **Server repository:** https://github.com/your-username/salonbook-server
+- **Live site:** https://salonbook-client-seven.vercel.app
+- **Client repository:** https://github.com/biddut-webdev/salonbook-client
+- **Server repository:** https://github.com/biddut-webdev/salonbook-server
+- **Live API:** https://salonbook-server-blue.vercel.app
 
 ---
 
@@ -62,7 +64,7 @@ This repository contains the **Next.js (App Router) frontend**.
 ## Installation
 
 ```bash
-git clone https://github.com/your-username/salonbook-client.git
+git clone https://github.com/biddut-webdev/salonbook-client.git
 cd salonbook-client
 npm install
 ```
@@ -164,6 +166,6 @@ npm run make-admin -- admin@example.com
 ## Deployment
 
 - Deploy this repository to **Vercel** (framework preset: Next.js).
-- Set the three `NEXT_PUBLIC_*` variables in the project settings.
+- Set `NEXT_PUBLIC_API_URL` to the deployed server URL in the Vercel project settings.
 - Add the deployed client URL to the server's `CLIENT_URL` and to the Google OAuth
   authorised redirect URIs (`<server>/api/auth/callback/google`).
