@@ -1,8 +1,9 @@
+
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menu, Scissors, X } from "lucide-react";
 import { authClient, type SessionUser } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
@@ -17,11 +18,19 @@ const publicLinks = [
 
 function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2">
-      <span className="grid size-9 place-items-center rounded-full bg-primary text-primary-foreground">
-        <Scissors className="size-4" />
+    <Link href="/" className="group flex items-center gap-2.5">
+      <span className="grid size-10 place-items-center rounded-full bg-gradient-to-br from-primary to-[oklch(0.62_0.13_25)] text-primary-foreground shadow-soft transition-transform group-hover:rotate-6">
+        <Scissors className="size-4.5" />
       </span>
-      <span className="text-lg font-bold tracking-tight">SalonBook</span>
+
+      <span className="flex flex-col leading-none">
+        <span className="font-display text-xl font-semibold tracking-tight">
+          SalonBook
+        </span>
+        <span className="mt-0.5 text-[10px] tracking-[0.22em] text-muted-foreground uppercase">
+          Hair · Skin · Spa
+        </span>
+      </span>
     </Link>
   );
 }
@@ -33,11 +42,6 @@ export default function Navbar() {
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Close the mobile menu whenever the page (route) changes.
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
-
   // A link gets the "active" style when it matches the current page.
   function isActive(href: string) {
     return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -48,9 +52,12 @@ export default function Navbar() {
       <Link
         key={link.href}
         href={link.href}
+        onClick={() => setMobileOpen(false)}
         className={cn(
-          "rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
-          isActive(link.href) ? "text-primary" : "text-foreground",
+          "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+          isActive(link.href)
+            ? "bg-secondary text-primary"
+            : "text-foreground/80 hover:bg-muted hover:text-foreground",
           className,
         )}
       >
@@ -60,8 +67,8 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-lg supports-[backdrop-filter]:bg-background/70">
+      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Logo />
 
         {/* Desktop navigation */}
@@ -72,7 +79,6 @@ export default function Navbar() {
         {/* Desktop: user menu or sign in / sign up */}
         <div className="hidden items-center gap-2 md:flex">
           {isPending ? (
-            // Skeleton while the session is being checked — avoids a wrong flash.
             <div className="size-9 animate-pulse rounded-full bg-muted" />
           ) : user ? (
             <UserMenu user={user} />
@@ -80,13 +86,19 @@ export default function Navbar() {
             <>
               <Button
                 variant="ghost"
+                className="rounded-full"
                 nativeButton={false}
                 render={<Link href="/sign-in" />}
               >
                 Sign In
               </Button>
-              <Button nativeButton={false} render={<Link href="/sign-up" />}>
-                Sign Up
+
+              <Button
+                className="rounded-full px-5 shadow-soft"
+                nativeButton={false}
+                render={<Link href="/sign-up" />}
+              >
+                Book Now
               </Button>
             </>
           )}
@@ -96,17 +108,21 @@ export default function Navbar() {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="rounded-full md:hidden"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           onClick={() => setMobileOpen((prev) => !prev)}
         >
-          {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          {mobileOpen ? (
+            <X className="size-5" />
+          ) : (
+            <Menu className="size-5" />
+          )}
         </Button>
       </div>
 
-      {/* Mobile menu (only rendered when open) */}
+      {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-border px-4 py-3 md:hidden">
+        <div className="border-t border-border bg-background px-4 py-3 md:hidden">
           <nav className="flex flex-col gap-1">{renderLinks()}</nav>
 
           <div className="mt-3 border-t border-border pt-3">
@@ -115,16 +131,22 @@ export default function Navbar() {
                 <p className="truncate px-3 py-2 text-sm font-semibold">
                   {user.name}
                 </p>
+
                 <Link
-                  href="/dashboard"
+                  href={user.role === "admin" ? "/admin" : "/dashboard"}
+                  onClick={() => setMobileOpen(false)}
                   className="rounded-lg px-3 py-2 text-sm font-medium hover:bg-muted"
                 >
                   Dashboard
                 </Link>
+
                 <Button
                   variant="ghost"
                   className="justify-start text-destructive hover:bg-destructive/10 hover:text-destructive"
-                  onClick={() => authClient.signOut()}
+                  onClick={() => {
+                    setMobileOpen(false);
+                    authClient.signOut();
+                  }}
                 >
                   Logout
                 </Button>
@@ -136,13 +158,16 @@ export default function Navbar() {
                   className="flex-1"
                   nativeButton={false}
                   render={<Link href="/sign-in" />}
+                  onClick={() => setMobileOpen(false)}
                 >
                   Sign In
                 </Button>
+
                 <Button
                   className="flex-1"
                   nativeButton={false}
                   render={<Link href="/sign-up" />}
+                  onClick={() => setMobileOpen(false)}
                 >
                   Sign Up
                 </Button>
