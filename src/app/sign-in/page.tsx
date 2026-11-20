@@ -9,9 +9,10 @@ import { authClient } from "@/lib/auth-client";
 import { isValidEmail } from "@/lib/validation";
 import { Button } from "@/components/ui/button";
 import GoogleButton from "@/components/auth/google-button";
+import AuthShell from "@/components/auth/auth-shell";
 
 const inputClass =
-  "h-10 w-full rounded-lg border border-border bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50";
+  "h-11 w-full rounded-xl border border-border bg-background px-3.5 text-sm outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring/50";
 
 function SignInForm() {
   const router = useRouter();
@@ -62,14 +63,10 @@ function SignInForm() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-16">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold tracking-tight">Sign In</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Welcome back! Sign in to manage your appointments.
-        </p>
-      </div>
-
+    <AuthShell
+      title="Welcome back"
+      subtitle="Sign in to manage your appointments and payments."
+    >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
           <label htmlFor="email" className="text-sm font-medium">
@@ -119,7 +116,7 @@ function SignInForm() {
         </Button>
       </form>
 
-      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+      <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
         <span className="h-px flex-1 bg-border" />
         OR
         <span className="h-px flex-1 bg-border" />
@@ -127,13 +124,13 @@ function SignInForm() {
 
       <GoogleButton />
 
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="mt-6 text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{" "}
         <Link href="/sign-up" className="font-medium text-primary hover:underline">
           Sign Up
         </Link>
       </p>
-    </div>
+    </AuthShell>
   );
 }
 

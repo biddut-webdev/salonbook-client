@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -47,11 +47,11 @@ type ApiResponse = {
 };
 
 function formatDate(value?: string) {
-  if (!value) return "—";
+  if (!value) return "â€”";
 
   const date = new Date(value);
 
-  if (Number.isNaN(date.getTime())) return "—";
+  if (Number.isNaN(date.getTime())) return "â€”";
 
   return date.toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -63,7 +63,7 @@ function formatDate(value?: string) {
 function formatAmount(amount: number, currency: string) {
   const value = Number(amount);
 
-  if (!Number.isFinite(value)) return "—";
+  if (!Number.isFinite(value)) return "â€”";
 
   return `${value.toLocaleString(undefined, {
     minimumFractionDigits: 2,
@@ -212,7 +212,7 @@ const TransactionsPage = () => {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3">
         <Loader2 className="h-9 w-9 animate-spin text-violet-600" />
-        <p className="text-sm text-gray-500">Loading transactions...</p>
+        <p className="text-sm text-muted-foreground">Loading transactions...</p>
       </div>
     );
   }
@@ -222,10 +222,10 @@ const TransactionsPage = () => {
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
             Transactions
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             View and monitor all customer payment records.
           </p>
         </div>
@@ -234,7 +234,7 @@ const TransactionsPage = () => {
           type="button"
           onClick={handleRefresh}
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-2.5 text-sm font-semibold text-foreground/80 transition hover:bg-secondary disabled:opacity-50"
         >
           <RefreshCw className="h-4 w-4" />
           Refresh
@@ -249,14 +249,14 @@ const TransactionsPage = () => {
           return (
             <div
               key={stat.title}
-              className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
+              className="rounded-2xl border border-border bg-white p-5 shadow-sm"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-muted-foreground">
                     {stat.title}
                   </p>
-                  <h2 className="mt-2 text-3xl font-bold text-gray-900">
+                  <h2 className="mt-2 text-3xl font-bold text-foreground">
                     {stat.value}
                   </h2>
                 </div>
@@ -273,33 +273,33 @@ const TransactionsPage = () => {
       </div>
 
       {/* Transactions table */}
-      <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-        <div className="flex flex-col gap-4 border-b border-gray-100 p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+        <div className="flex flex-col gap-4 border-b border-border p-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">
+            <h2 className="text-lg font-bold text-foreground">
               All Transactions
             </h2>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               Payment history from Stripe Checkout.
             </p>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/70" />
               <input
                 type="search"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search customer, service..."
-                className="w-full rounded-xl border border-gray-200 py-2.5 pl-9 pr-3 text-sm outline-none transition focus:border-violet-500 sm:w-64"
+                className="w-full rounded-xl border border-border py-2.5 pl-9 pr-3 text-sm outline-none transition focus:border-violet-500 sm:w-64"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(event) => setStatusFilter(event.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-violet-500"
+              className="rounded-xl border border-border bg-white px-3 py-2.5 text-sm outline-none focus:border-violet-500"
             >
               <option value="all">All Payments</option>
               <option value="paid">Paid</option>
@@ -327,11 +327,11 @@ const TransactionsPage = () => {
               <ReceiptText className="h-7 w-7 text-violet-500" />
             </div>
 
-            <h3 className="font-semibold text-gray-900">
+            <h3 className="font-semibold text-foreground">
               No transactions found
             </h3>
 
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               {search || statusFilter !== "all"
                 ? "Try changing your search or filter."
                 : "Transactions will appear here after verified payments."}
@@ -340,7 +340,7 @@ const TransactionsPage = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1100px] text-left">
-              <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
+              <thead className="bg-secondary/40 text-xs uppercase tracking-wide text-muted-foreground">
                 <tr>
                   <th className="px-5 py-4 font-semibold">Customer</th>
                   <th className="px-5 py-4 font-semibold">Service</th>
@@ -352,11 +352,11 @@ const TransactionsPage = () => {
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-border">
                 {filteredTransactions.map((transaction) => (
                   <tr
                     key={transaction._id}
-                    className="transition hover:bg-gray-50/70"
+                    className="transition hover:bg-secondary/70"
                   >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
@@ -375,44 +375,44 @@ const TransactionsPage = () => {
                         )}
 
                         <div>
-                          <p className="font-semibold text-gray-900">
+                          <p className="font-semibold text-foreground">
                             {transaction.customer?.name || "Unknown Customer"}
                           </p>
-                          <p className="text-xs text-gray-500">
-                            {transaction.customer?.email || "—"}
+                          <p className="text-xs text-muted-foreground">
+                            {transaction.customer?.email || "â€”"}
                           </p>
                         </div>
                       </div>
                     </td>
 
                     <td className="px-5 py-4">
-                      <p className="font-medium text-gray-800">
+                      <p className="font-medium text-foreground/90">
                         {transaction.service?.serviceName ||
                           "Service unavailable"}
                       </p>
                     </td>
 
                     <td className="px-5 py-4">
-                      <p className="text-sm font-medium text-gray-800">
+                      <p className="text-sm font-medium text-foreground/90">
                         {formatDate(transaction.appointment?.appointmentDate)}
                       </p>
-                      <p className="mt-1 text-xs text-gray-500">
-                        {transaction.appointment?.timeSlot || "—"}
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {transaction.appointment?.timeSlot || "â€”"}
                       </p>
                     </td>
 
-                    <td className="px-5 py-4 font-semibold text-gray-900">
+                    <td className="px-5 py-4 font-semibold text-foreground">
                       {formatAmount(transaction.amount, transaction.currency)}
                     </td>
 
                     <td className="px-5 py-4">
                       <span
                         title={transaction.stripeSessionId}
-                        className="font-mono text-xs text-gray-600"
+                        className="font-mono text-xs text-muted-foreground"
                       >
                         {transaction.stripeSessionId
                           ? `${transaction.stripeSessionId.slice(0, 18)}...`
-                          : "—"}
+                          : "â€”"}
                       </span>
                     </td>
 
@@ -430,7 +430,7 @@ const TransactionsPage = () => {
                       )}
                     </td>
 
-                    <td className="px-5 py-4 text-sm text-gray-600">
+                    <td className="px-5 py-4 text-sm text-muted-foreground">
                       {formatDate(transaction.createdAt)}
                     </td>
                   </tr>
@@ -441,7 +441,7 @@ const TransactionsPage = () => {
         )}
 
         {!error && filteredTransactions.length > 0 && (
-          <div className="border-t border-gray-100 px-5 py-4 text-sm text-gray-500">
+          <div className="border-t border-border px-5 py-4 text-sm text-muted-foreground">
             Showing {filteredTransactions.length} of {transactions.length}{" "}
             transactions
           </div>

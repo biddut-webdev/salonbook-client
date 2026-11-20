@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useEffect, useState } from "react";
@@ -211,10 +211,10 @@ export default function ManageAppointmentsPage() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-foreground">
           Manage Appointments
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-muted-foreground">
           View and manage all customer appointments.
         </p>
       </div>
@@ -225,7 +225,7 @@ export default function ManageAppointmentsPage() {
         <div className="relative">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/70"
           />
 
           <input
@@ -256,7 +256,7 @@ export default function ManageAppointmentsPage() {
         <div className="relative">
           <CalendarDays
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/70"
           />
 
           <input
@@ -272,10 +272,10 @@ export default function ManageAppointmentsPage() {
       <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div>
-            <h2 className="font-semibold text-gray-900">
+            <h2 className="font-semibold text-foreground">
               All Appointments
             </h2>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               {appointments.length} appointments found
             </p>
           </div>
@@ -287,7 +287,7 @@ export default function ManageAppointmentsPage() {
               fetchAppointments();
             }}
             disabled={loading}
-            className="flex items-center gap-2 rounded-lg border px-3 py-2 text-sm transition hover:bg-gray-50 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg border px-3 py-2 text-sm transition hover:bg-secondary disabled:opacity-50"
           >
             <RefreshCw
               size={15}
@@ -299,7 +299,7 @@ export default function ManageAppointmentsPage() {
 
         {loading ? (
           <div className="flex min-h-60 items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-primary" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary" />
           </div>
         ) : error ? (
           <div className="p-8 text-center">
@@ -318,17 +318,17 @@ export default function ManageAppointmentsPage() {
           </div>
         ) : appointments.length === 0 ? (
           <div className="p-12 text-center">
-            <p className="font-medium text-gray-700">
+            <p className="font-medium text-foreground/80">
               No appointments found
             </p>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               Try changing your search or filters.
             </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[950px] text-left text-sm">
-              <thead className="bg-gray-50 text-gray-600">
+              <thead className="bg-secondary/40 text-muted-foreground">
                 <tr>
                   <th className="px-5 py-4 font-semibold">
                     Customer
@@ -355,43 +355,43 @@ export default function ManageAppointmentsPage() {
                 {appointments.map((appointment) => (
                   <tr
                     key={appointment._id}
-                    className="transition hover:bg-gray-50"
+                    className="transition hover:bg-secondary"
                   >
                     {/* Customer */}
                     <td className="px-5 py-4">
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-foreground">
                         {appointment.customer?.name || "Unknown"}
                       </p>
-                      <p className="mt-1 text-xs text-gray-500">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         {appointment.customer?.email || "No email"}
                       </p>
                     </td>
 
                     {/* Service */}
                     <td className="px-5 py-4">
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-foreground">
                         {appointment.service?.serviceName ||
                           "Service unavailable"}
                       </p>
 
-                      <p className="mt-1 text-xs text-gray-500">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         {appointment.service?.category || ""}
                       </p>
                     </td>
 
                     {/* Date and Time */}
                     <td className="px-5 py-4">
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-foreground">
                         {formatDate(appointment.appointmentDate)}
                       </p>
-                      <p className="mt-1 text-xs text-gray-500">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         {appointment.timeSlot}
                       </p>
                     </td>
 
                     {/* Price */}
-                    <td className="px-5 py-4 font-medium text-gray-900">
-                      ৳{appointment.servicePrice}
+                    <td className="px-5 py-4 font-medium text-foreground">
+                      à§³{appointment.servicePrice}
                     </td>
 
                     {/* Payment */}

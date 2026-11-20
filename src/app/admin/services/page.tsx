@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useEffect, useState } from "react";
@@ -251,11 +251,11 @@ const AdminServicesPage = () => {
       {/* Page Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-foreground">
             Manage Services
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Manage all salon services from one place.
           </p>
         </div>
@@ -271,34 +271,34 @@ const AdminServicesPage = () => {
 
       {/* Statistics */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-          <p className="text-sm text-gray-500">Total Services</p>
-          <h2 className="mt-2 text-2xl font-bold text-gray-900">
+        <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <p className="text-sm text-muted-foreground">Total Services</p>
+          <h2 className="mt-2 text-2xl font-bold text-foreground">
             {services.length}
           </h2>
         </div>
 
-        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-          <p className="text-sm text-gray-500">Active Services</p>
+        <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <p className="text-sm text-muted-foreground">Active Services</p>
           <h2 className="mt-2 text-2xl font-bold text-green-600">
             {services.filter((service) => service.status === "active").length}
           </h2>
         </div>
 
-        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-          <p className="text-sm text-gray-500">Inactive Services</p>
-          <h2 className="mt-2 text-2xl font-bold text-gray-500">
+        <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
+          <p className="text-sm text-muted-foreground">Inactive Services</p>
+          <h2 className="mt-2 text-2xl font-bold text-muted-foreground">
             {services.filter((service) => service.status === "inactive").length}
           </h2>
         </div>
       </div>
 
       {/* Search */}
-      <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+      <div className="rounded-2xl border border-border bg-white p-4 shadow-sm">
         <div className="relative max-w-md">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/70"
           />
 
           <input
@@ -306,7 +306,7 @@ const AdminServicesPage = () => {
             placeholder="Search services..."
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            className="w-full rounded-xl border border-gray-200 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-violet-500"
+            className="w-full rounded-xl border border-border py-3 pl-10 pr-4 text-sm outline-none transition focus:border-violet-500"
           />
         </div>
       </div>
@@ -331,25 +331,25 @@ const AdminServicesPage = () => {
           </button>
         </div>
       ) : filteredServices.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-gray-300 bg-white py-16 text-center">
+        <div className="rounded-2xl border border-dashed border-border bg-white py-16 text-center">
           <Scissors
-            className="mx-auto text-gray-400"
+            className="mx-auto text-muted-foreground/70"
             size={36}
           />
 
-          <h3 className="mt-4 font-semibold text-gray-800">
+          <h3 className="mt-4 font-semibold text-foreground/90">
             No services found
           </h3>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Add a new service or try another search.
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[950px] text-left">
-              <thead className="bg-gray-50 text-xs uppercase text-gray-500">
+              <thead className="bg-secondary/40 text-xs uppercase text-muted-foreground">
                 <tr>
                   <th className="px-6 py-4">Service</th>
                   <th className="px-6 py-4">Category</th>
@@ -361,11 +361,11 @@ const AdminServicesPage = () => {
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-border">
                 {filteredServices.map((service) => (
                   <tr
                     key={service._id}
-                    className="transition hover:bg-gray-50"
+                    className="transition hover:bg-secondary"
                   >
                     {/* Service */}
                     <td className="px-6 py-4">
@@ -382,24 +382,24 @@ const AdminServicesPage = () => {
                           </div>
                         )}
 
-                        <span className="font-semibold text-gray-800">
+                        <span className="font-semibold text-foreground/90">
                           {service.serviceName}
                         </span>
                       </div>
                     </td>
 
                     {/* Category */}
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-6 py-4 text-sm text-muted-foreground">
                       {service.category}
                     </td>
 
                     {/* Price */}
-                    <td className="px-6 py-4 text-sm font-semibold text-gray-800">
-                      ৳{service.price}
+                    <td className="px-6 py-4 text-sm font-semibold text-foreground/90">
+                      à§³{service.price}
                     </td>
 
                     {/* Duration */}
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-6 py-4 text-sm text-muted-foreground">
                       {service.duration} min
                     </td>
 
@@ -408,7 +408,7 @@ const AdminServicesPage = () => {
                       <span
                         className={`rounded-full px-3 py-1 text-xs font-semibold ${service.status === "active"
                             ? "bg-green-100 text-green-700"
-                            : "bg-gray-100 text-gray-600"
+                            : "bg-secondary text-muted-foreground"
                           }`}
                       >
                         {service.status}
@@ -443,7 +443,7 @@ const AdminServicesPage = () => {
                       <div className="flex justify-end gap-2">
                         <Link
                           href={`/admin/services/${service._id}/edit`}
-                          className="rounded-lg border border-gray-200 p-2 text-gray-600 transition hover:bg-violet-50 hover:text-violet-600"
+                          className="rounded-lg border border-border p-2 text-muted-foreground transition hover:bg-violet-50 hover:text-violet-600"
                           title="Edit service"
                         >
                           <Pencil size={17} />
@@ -497,7 +497,7 @@ const AdminServicesPage = () => {
 
       {/* Total Services */}
       {!loading && !error && (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Showing {filteredServices.length} of {services.length} services
         </p>
       )}

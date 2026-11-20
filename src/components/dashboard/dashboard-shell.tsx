@@ -6,16 +6,16 @@ import { useState } from "react";
 import {
   ArrowLeft,
   CalendarDays,
+  CreditCard,
   LayoutDashboard,
   LogOut,
   Menu,
+  PlusCircle,
+  Scissors,
   ShieldCheck,
   User,
-  X,
-  Scissors,
-  PlusCircle,
   Users,
-  CreditCard,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import { authClient, type SessionUser } from "@/lib/auth-client";
@@ -95,6 +95,7 @@ const NAV_LINKS: NavLink[] = [
     roles: ["admin"],
   },
 ];
+
 export default function DashboardShell({
   user,
   children,
@@ -109,10 +110,11 @@ export default function DashboardShell({
   const role = user.role === "admin" ? "admin" : "customer";
   const links = NAV_LINKS.filter((link) => link.roles.includes(role));
 
+  // Overview pages must match exactly, otherwise /admin would also be
+  // "active" while the admin is on /admin/services.
   function isActive(href: string) {
-    return href === "/dashboard"
-      ? pathname === "/dashboard"
-      : pathname.startsWith(href);
+    if (href === "/dashboard" || href === "/admin") return pathname === href;
+    return pathname === href || pathname.startsWith(`${href}/`);
   }
 
   async function handleLogout() {
@@ -122,37 +124,52 @@ export default function DashboardShell({
 
   const nav = (
     <nav className="flex flex-col gap-1">
-      {links.map((link) => (
-        <Link
-          key={link.href}
-          href={link.href}
-          onClick={() => setMobileOpen(false)}
-          className={cn(
-            "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
-            isActive(link.href)
-              ? "bg-primary/10 text-primary"
-              : "text-foreground",
-          )}
-        >
-          <link.icon className="size-4" />
-          {link.label}
-        </Link>
-      ))}
+      {links.map((link) => {
+        const active = isActive(link.href);
+
+        return (
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={() => setMobileOpen(false)}
+            className={cn(
+              "flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+              active
+                ? "bg-primary text-primary-foreground shadow-soft"
+                : "text-foreground/75 hover:bg-secondary hover:text-foreground",
+            )}
+          >
+            <link.icon
+              className={cn("size-4", active ? "" : "text-muted-foreground")}
+            />
+            {link.label}
+          </Link>
+        );
+      })}
     </nav>
   );
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
-      <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
+      <div className="grid gap-6 lg:grid-cols-[250px_1fr]">
         {/* Sidebar (desktop) */}
         <aside className="hidden lg:block">
-          <div className="sticky top-24 space-y-6">
-            <div className="rounded-xl border border-border bg-card p-4">
-              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <div className="sticky top-24 space-y-5">
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+              <p className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                 {role === "admin" ? "Admin panel" : "My account"}
               </p>
-              <p className="mt-1 truncate text-sm font-semibold">{user.name}</p>
-              <p className="mt-1 inline-flex items-center gap-1 text-xs text-muted-foreground">
+              <p className="font-display mt-1.5 truncate text-lg font-semibold">
+                {user.name}
+              </p>
+              <span
+                className={cn(
+                  "mt-2 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold",
+                  role === "admin"
+                    ? "bg-primary/10 text-primary"
+                    : "bg-secondary text-secondary-foreground",
+                )}
+              >
                 {role === "admin" ? (
                   <>
                     <ShieldCheck className="size-3" /> Administrator
@@ -160,7 +177,7 @@ export default function DashboardShell({
                 ) : (
                   "Customer"
                 )}
-              </p>
+              </span>
             </div>
 
             {nav}
@@ -168,14 +185,14 @@ export default function DashboardShell({
             <div className="space-y-1 border-t border-border pt-3">
               <Link
                 href="/"
-                className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
                 <ArrowLeft className="size-4" />
                 Back to site
               </Link>
               <Button
                 variant="ghost"
-                className="w-full justify-start text-destructive hover:bg-destructive/10 hover:text-destructive"
+                className="w-full justify-start rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive"
                 onClick={handleLogout}
               >
                 <LogOut className="size-4" />
@@ -190,7 +207,7 @@ export default function DashboardShell({
           {/* Mobile header with menu toggle */}
           <div className="mb-4 flex items-center justify-between gap-2 lg:hidden">
             <div className="min-w-0">
-              <p className="text-xs text-muted-foreground uppercase">
+              <p className="text-[11px] tracking-[0.14em] text-muted-foreground uppercase">
                 {role === "admin" ? "Admin panel" : "My account"}
               </p>
               <p className="truncate text-sm font-semibold">{user.name}</p>
@@ -198,6 +215,7 @@ export default function DashboardShell({
             <Button
               variant="outline"
               size="icon"
+              className="rounded-xl"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               onClick={() => setMobileOpen((prev) => !prev)}
             >
@@ -206,12 +224,12 @@ export default function DashboardShell({
           </div>
 
           {mobileOpen && (
-            <div className="mb-4 space-y-1 rounded-xl border border-border bg-card p-2 lg:hidden">
+            <div className="mb-4 space-y-1 rounded-2xl border border-border bg-card p-2 shadow-soft lg:hidden">
               {nav}
               <div className="mt-1 border-t border-border pt-1">
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  className="w-full justify-start rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive"
                   onClick={handleLogout}
                 >
                   <LogOut className="size-4" />

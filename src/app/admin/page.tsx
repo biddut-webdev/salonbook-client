@@ -1,4 +1,4 @@
-
+﻿
 import Link from "next/link";
 import {
   CalendarDays,
@@ -17,28 +17,28 @@ import AdminStats from "@/components/dashboard/admin-stats";
 const stats = [
   {
     title: "Total Appointments",
-    value: "—",
+    value: "â€”",
     description: "All appointments",
     icon: CalendarDays,
     color: "bg-blue-500/10 text-blue-600",
   },
   {
     title: "Total Services",
-    value: "—",
+    value: "â€”",
     description: "Available services",
     icon: Scissors,
     color: "bg-purple-500/10 text-purple-600",
   },
   {
     title: "Total Customers",
-    value: "—",
+    value: "â€”",
     description: "Registered customers",
     icon: Users,
     color: "bg-emerald-500/10 text-emerald-600",
   },
   {
     title: "Total Revenue",
-    value: "—",
+    value: "â€”",
     description: "From transactions",
     icon: CreditCard,
     color: "bg-orange-500/10 text-orange-600",
@@ -97,7 +97,7 @@ export default function AdminOverviewPage() {
 
           <Link
             href="/admin/services/new"
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-amber-100"
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-amber-100"
           >
             <Plus className="size-4" />
             Add New Service

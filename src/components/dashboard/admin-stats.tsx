@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useEffect, useState } from "react";
@@ -108,7 +108,7 @@ const AdminStats = () => {
         {cards.map((card) => (
           <div
             key={card.title}
-            className="h-32 animate-pulse rounded-2xl bg-gray-100"
+            className="h-32 animate-pulse rounded-2xl bg-secondary"
           />
         ))}
       </div>
@@ -131,10 +131,10 @@ const AdminStats = () => {
         return (
           <div
             key={card.title}
-            className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            className="rounded-2xl border border-border bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
           >
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-gray-500">
+              <p className="text-sm font-medium text-muted-foreground">
                 {card.title}
               </p>
 
@@ -143,7 +143,7 @@ const AdminStats = () => {
               </div>
             </div>
 
-            <h3 className="mt-5 text-3xl font-bold text-gray-900">
+            <h3 className="mt-5 text-3xl font-bold text-foreground">
               {card.value ?? 0}
             </h3>
           </div>

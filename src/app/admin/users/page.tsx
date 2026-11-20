@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useEffect, useState } from "react";
@@ -160,10 +160,10 @@ export default function ManageUsersPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-foreground">
           Manage Users
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-muted-foreground">
           View, search and manage registered customers.
         </p>
       </div>
@@ -173,8 +173,8 @@ export default function ManageUsersPage() {
         <div className="rounded-xl border bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Customers</p>
-              <h2 className="mt-2 text-2xl font-bold text-gray-900">
+              <p className="text-sm text-muted-foreground">Total Customers</p>
+              <h2 className="mt-2 text-2xl font-bold text-foreground">
                 {users.length}
               </h2>
             </div>
@@ -187,8 +187,8 @@ export default function ManageUsersPage() {
         <div className="rounded-xl border bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Active Customers</p>
-              <h2 className="mt-2 text-2xl font-bold text-gray-900">
+              <p className="text-sm text-muted-foreground">Active Customers</p>
+              <h2 className="mt-2 text-2xl font-bold text-foreground">
                 {users.filter((user) => !user.isBlocked).length}
               </h2>
             </div>
@@ -201,8 +201,8 @@ export default function ManageUsersPage() {
         <div className="rounded-xl border bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Blocked Customers</p>
-              <h2 className="mt-2 text-2xl font-bold text-gray-900">
+              <p className="text-sm text-muted-foreground">Blocked Customers</p>
+              <h2 className="mt-2 text-2xl font-bold text-foreground">
                 {users.filter((user) => user.isBlocked).length}
               </h2>
             </div>
@@ -217,10 +217,10 @@ export default function ManageUsersPage() {
       <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
         <div className="flex flex-col gap-4 border-b p-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="font-semibold text-gray-900">
+            <h2 className="font-semibold text-foreground">
               All Customers
             </h2>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               {filteredUsers.length} customers found
             </p>
           </div>
@@ -229,7 +229,7 @@ export default function ManageUsersPage() {
             <div className="relative flex-1 sm:w-72">
               <Search
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/70"
               />
               <input
                 type="text"
@@ -247,7 +247,7 @@ export default function ManageUsersPage() {
                 fetchUsers();
               }}
               disabled={loading}
-              className="rounded-lg border p-2.5 transition hover:bg-gray-50 disabled:opacity-50"
+              className="rounded-lg border p-2.5 transition hover:bg-secondary disabled:opacity-50"
               title="Refresh users"
             >
               <RefreshCw
@@ -260,7 +260,7 @@ export default function ManageUsersPage() {
 
         {loading ? (
           <div className="flex min-h-60 items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-primary" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary" />
           </div>
         ) : error ? (
           <div className="p-10 text-center">
@@ -278,18 +278,18 @@ export default function ManageUsersPage() {
           </div>
         ) : filteredUsers.length === 0 ? (
           <div className="p-12 text-center">
-            <Users className="mx-auto text-gray-400" size={32} />
-            <p className="mt-3 font-medium text-gray-700">
+            <Users className="mx-auto text-muted-foreground/70" size={32} />
+            <p className="mt-3 font-medium text-foreground/80">
               No customers found
             </p>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               Try searching with another name or email.
             </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[750px] text-left text-sm">
-              <thead className="bg-gray-50 text-gray-600">
+              <thead className="bg-secondary/40 text-muted-foreground">
                 <tr>
                   <th className="px-5 py-4 font-semibold">Customer</th>
                   <th className="px-5 py-4 font-semibold">Joined Date</th>
@@ -300,7 +300,7 @@ export default function ManageUsersPage() {
 
               <tbody className="divide-y">
                 {filteredUsers.map((user) => (
-                  <tr key={user._id} className="hover:bg-gray-50">
+                  <tr key={user._id} className="hover:bg-secondary">
                     {/* Customer Information */}
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
@@ -311,16 +311,16 @@ export default function ManageUsersPage() {
                             className="h-10 w-10 rounded-full object-cover"
                           />
                         ) : (
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 font-semibold text-gray-600">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary font-semibold text-muted-foreground">
                             {user.name?.charAt(0)?.toUpperCase() || "U"}
                           </div>
                         )}
 
                         <div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium text-foreground">
                             {user.name || "Unknown"}
                           </p>
-                          <p className="mt-1 text-xs text-gray-500">
+                          <p className="mt-1 text-xs text-muted-foreground">
                             {user.email}
                           </p>
                         </div>
@@ -328,7 +328,7 @@ export default function ManageUsersPage() {
                     </td>
 
                     {/* Joined Date */}
-                    <td className="px-5 py-4 text-gray-600">
+                    <td className="px-5 py-4 text-muted-foreground">
                       {formatDate(user.createdAt)}
                     </td>
 

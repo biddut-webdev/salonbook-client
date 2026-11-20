@@ -26,28 +26,36 @@ const features = [
  */
 export default function WhyChooseUs() {
   return (
-    <section className="bg-muted/40">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+    <section className="relative overflow-hidden border-y border-border bg-secondary/40">
+      <div className="bg-dotted absolute inset-0 opacity-40" aria-hidden />
+
+      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            Why Choose SalonBook?
+          <p className="eyebrow text-primary">Why SalonBook</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+            A calmer way to book your next visit
           </h2>
-          <p className="mt-2 text-muted-foreground">
+          <p className="mt-3 text-muted-foreground">
             A simpler, safer way to book your next salon visit.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {features.map((feature) => (
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {features.map((feature, index) => (
             <div
               key={feature.title}
-              className="rounded-2xl border border-border bg-background p-6"
+              className="group relative rounded-3xl border border-border bg-card p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg"
             >
-              <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
+              <span className="absolute top-6 right-6 font-display text-3xl font-semibold text-primary/10">
+                0{index + 1}
+              </span>
+              <span className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                 <feature.icon className="size-5" />
               </span>
-              <h3 className="mt-4 font-semibold">{feature.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <h3 className="font-display mt-5 text-lg font-semibold">
+                {feature.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {feature.description}
               </p>
             </div>

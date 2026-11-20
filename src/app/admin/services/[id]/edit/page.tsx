@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
@@ -51,9 +51,9 @@ const initialForm: ServiceForm = {
 };
 
 const inputStyle =
-  "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100";
+  "w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-foreground/80 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100";
 
-const labelStyle = "mb-2 block text-sm font-semibold text-gray-700";
+const labelStyle = "mb-2 block text-sm font-semibold text-foreground/80";
 
 async function readResponse<T>(response: Response): Promise<ApiResponse<T>> {
   try {
@@ -359,7 +359,7 @@ const EditServicePage = () => {
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
           <Loader2 className="mx-auto h-9 w-9 animate-spin text-violet-600" />
-          <p className="mt-3 text-sm text-gray-500">
+          <p className="mt-3 text-sm text-muted-foreground">
             Loading service information...
           </p>
         </div>
@@ -370,7 +370,7 @@ const EditServicePage = () => {
   if (pageError) {
     return (
       <div className="rounded-2xl border border-red-100 bg-white p-8 text-center">
-        <h2 className="text-xl font-bold text-gray-900">
+        <h2 className="text-xl font-bold text-foreground">
           Unable to load service
         </h2>
         <p className="mt-2 text-sm text-red-600">{pageError}</p>
@@ -392,17 +392,17 @@ const EditServicePage = () => {
         <button
           type="button"
           onClick={() => router.push("/admin/services")}
-          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-violet-600"
+          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-violet-600"
         >
           <ArrowLeft size={17} />
           Back to Services
         </button>
 
-        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
           Edit Service
         </h1>
 
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-muted-foreground">
           Update your service information and keep your details up to date.
         </p>
       </div>
@@ -410,13 +410,13 @@ const EditServicePage = () => {
       {/* Edit Service Form */}
       <form
         onSubmit={handleSubmit}
-        className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm"
+        className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
       >
-        <div className="border-b border-gray-100 bg-violet-50/50 px-5 py-5 sm:px-8">
-          <h2 className="text-lg font-bold text-gray-900">
+        <div className="border-b border-border bg-violet-50/50 px-5 py-5 sm:px-8">
+          <h2 className="text-lg font-bold text-foreground">
             Service Information
           </h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Update the fields below and save your changes.
           </p>
         </div>
@@ -497,7 +497,7 @@ const EditServicePage = () => {
               required
               className={`${inputStyle} resize-y`}
             />
-            <p className="mt-1 text-right text-xs text-gray-400">
+            <p className="mt-1 text-right text-xs text-muted-foreground/70">
               {formData.description.length}/2000
             </p>
           </div>
@@ -506,7 +506,7 @@ const EditServicePage = () => {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label htmlFor="price" className={labelStyle}>
-                Price (৳) <span className="text-red-500">*</span>
+                Price (à§³) <span className="text-red-500">*</span>
               </label>
               <input
                 id="price"
@@ -545,18 +545,18 @@ const EditServicePage = () => {
           <div>
             <label className={labelStyle}>Current Service Image</label>
             {currentImage ? (
-              <div className="overflow-hidden rounded-xl border border-gray-200 p-3">
+              <div className="overflow-hidden rounded-xl border border-border p-3">
                 <img
                   src={currentImage}
                   alt={formData.serviceName || "Current service"}
                   className="h-52 w-full rounded-lg object-cover sm:h-64"
                 />
-                <p className="mt-2 text-xs text-gray-500">
+                <p className="mt-2 text-xs text-muted-foreground">
                   This image will remain unless you upload a replacement.
                 </p>
               </div>
             ) : (
-              <p className="rounded-xl border border-dashed border-gray-300 p-5 text-sm text-gray-500">
+              <p className="rounded-xl border border-dashed border-border p-5 text-sm text-muted-foreground">
                 No current image available.
               </p>
             )}
@@ -571,10 +571,10 @@ const EditServicePage = () => {
             <div className="rounded-xl border border-dashed border-violet-300 bg-violet-50/50 p-5">
               <div className="flex flex-col items-center text-center">
                 <Upload className="mb-3 h-8 w-8 text-violet-600" />
-                <p className="text-sm font-semibold text-gray-800">
+                <p className="text-sm font-semibold text-foreground/90">
                   Choose a new service image
                 </p>
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-muted-foreground">
                   PNG, JPG, JPEG or WEBP (Maximum 5MB)
                 </p>
               </div>
@@ -584,17 +584,17 @@ const EditServicePage = () => {
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
                 onChange={handleImageChange}
-                className="mt-4 block w-full cursor-pointer rounded-lg border border-gray-200 bg-white text-sm text-gray-600 file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-600 file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-violet-700"
+                className="mt-4 block w-full cursor-pointer rounded-lg border border-border bg-white text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-600 file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-violet-700"
               />
             </div>
 
             {selectedImage && (
               <div className="flex flex-col gap-3 rounded-xl border border-violet-100 bg-violet-50/50 p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-gray-800">
+                  <p className="truncate text-sm font-semibold text-foreground/90">
                     {selectedImage.name}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-muted-foreground">
                     {(selectedImage.size / (1024 * 1024)).toFixed(2)} MB
                   </p>
                 </div>
@@ -613,12 +613,12 @@ const EditServicePage = () => {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col-reverse gap-3 border-t border-gray-100 bg-gray-50/70 px-5 py-5 sm:flex-row sm:justify-end sm:px-8">
+        <div className="flex flex-col-reverse gap-3 border-t border-border bg-secondary/60 px-5 py-5 sm:flex-row sm:justify-end sm:px-8">
           <button
             type="button"
             onClick={() => router.push("/admin/services")}
             disabled={submitting}
-            className="rounded-xl border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 disabled:opacity-60"
+            className="rounded-xl border border-border bg-white px-6 py-3 text-sm font-semibold text-foreground/80 transition hover:bg-secondary disabled:opacity-60"
           >
             Cancel
           </button>

@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import {
@@ -210,17 +210,17 @@ const AddServicePage = () => {
       <div>
         <Link
           href="/admin/services"
-          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-violet-600"
+          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-violet-600"
         >
           <ArrowLeft size={17} />
           Back to Services
         </Link>
 
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-foreground">
           Add New Service
         </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-muted-foreground">
           Add a new salon service to your collection.
         </p>
       </div>
@@ -228,13 +228,13 @@ const AddServicePage = () => {
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
+        className="space-y-6 rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-8"
       >
         {/* Service Name */}
         <div className="space-y-2">
           <label
             htmlFor="serviceName"
-            className="text-sm font-semibold text-gray-700"
+            className="text-sm font-semibold text-foreground/80"
           >
             Service Name *
           </label>
@@ -247,7 +247,7 @@ const AddServicePage = () => {
             value={formData.serviceName}
             onChange={handleChange}
             required
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
 
@@ -255,7 +255,7 @@ const AddServicePage = () => {
         <div className="space-y-2">
           <label
             htmlFor="category"
-            className="text-sm font-semibold text-gray-700"
+            className="text-sm font-semibold text-foreground/80"
           >
             Category *
           </label>
@@ -267,7 +267,7 @@ const AddServicePage = () => {
             onChange={handleChange}
             required
             disabled={categoriesLoading || categories.length === 0}
-            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100 disabled:bg-gray-100"
+            className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100 disabled:bg-secondary"
           >
             <option value="">
               {categoriesLoading
@@ -293,7 +293,7 @@ const AddServicePage = () => {
         <div className="space-y-2">
           <label
             htmlFor="description"
-            className="text-sm font-semibold text-gray-700"
+            className="text-sm font-semibold text-foreground/80"
           >
             Description *
           </label>
@@ -306,7 +306,7 @@ const AddServicePage = () => {
             value={formData.description}
             onChange={handleChange}
             required
-            className="w-full resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            className="w-full resize-none rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           />
         </div>
 
@@ -315,9 +315,9 @@ const AddServicePage = () => {
           <div className="space-y-2">
             <label
               htmlFor="price"
-              className="text-sm font-semibold text-gray-700"
+              className="text-sm font-semibold text-foreground/80"
             >
-              Price (৳) *
+              Price (à§³) *
             </label>
 
             <input
@@ -330,14 +330,14 @@ const AddServicePage = () => {
               value={formData.price}
               onChange={handleChange}
               required
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+              className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
             />
           </div>
 
           <div className="space-y-2">
             <label
               htmlFor="duration"
-              className="text-sm font-semibold text-gray-700"
+              className="text-sm font-semibold text-foreground/80"
             >
               Duration (Minutes) *
             </label>
@@ -352,7 +352,7 @@ const AddServicePage = () => {
               value={formData.duration}
               onChange={handleChange}
               required
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+              className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
             />
           </div>
         </div>
@@ -362,7 +362,7 @@ const AddServicePage = () => {
         <div className="space-y-2">
           <label
             htmlFor="image"
-            className="text-sm font-semibold text-gray-700"
+            className="text-sm font-semibold text-foreground/80"
           >
             Service Image *
           </label>
@@ -373,16 +373,16 @@ const AddServicePage = () => {
             accept="image/png,image/jpeg,image/jpg,image/webp"
             onChange={handleImageChange}
             required={!selectedImage}
-            className="block w-full cursor-pointer rounded-xl border border-gray-200 bg-white text-sm text-gray-600 file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-600 file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-violet-700"
+            className="block w-full cursor-pointer rounded-xl border border-border bg-white text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-600 file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-violet-700"
           />
 
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             PNG, JPG, JPEG or WEBP (Maximum 5MB)
           </p>
 
           {selectedImage && (
             <div className="flex items-center justify-between rounded-xl border border-violet-100 bg-violet-50 px-4 py-3">
-              <span className="truncate text-sm text-gray-700">
+              <span className="truncate text-sm text-foreground/80">
                 {selectedImage.name}
               </span>
 
@@ -393,7 +393,7 @@ const AddServicePage = () => {
                   const input = document.getElementById("image") as HTMLInputElement;
                   input.value = "";
                 }}
-                className="ml-3 rounded-lg p-1 text-gray-500 hover:text-red-500"
+                className="ml-3 rounded-lg p-1 text-muted-foreground hover:text-red-500"
                 aria-label="Remove selected image"
               >
                 <X size={18} />
@@ -407,7 +407,7 @@ const AddServicePage = () => {
         <div className="space-y-2">
           <label
             htmlFor="status"
-            className="text-sm font-semibold text-gray-700"
+            className="text-sm font-semibold text-foreground/80"
           >
             Service Status
           </label>
@@ -417,7 +417,7 @@ const AddServicePage = () => {
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
           >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
@@ -425,10 +425,10 @@ const AddServicePage = () => {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col-reverse gap-3 border-t border-gray-100 pt-6 sm:flex-row sm:justify-end">
+        <div className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
           <Link
             href="/admin/services"
-            className="rounded-xl border border-gray-200 px-6 py-3 text-center text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
+            className="rounded-xl border border-border px-6 py-3 text-center text-sm font-semibold text-muted-foreground transition hover:bg-secondary"
           >
             Cancel
           </Link>

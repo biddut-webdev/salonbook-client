@@ -36,6 +36,7 @@ export default function MyAppointmentsPage() {
   const [error, setError] = useState("");
   const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [payingId, setPayingId] = useState<string | null>(null);
+  const [cancelTarget, setCancelTarget] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Fetch appointments
@@ -102,14 +103,9 @@ export default function MyAppointmentsPage() {
     setRefreshKey((prev) => prev + 1);
   }
 
-  // Cancel appointment
+  // Cancel appointment (the confirmation dialog calls this)
   async function handleCancel(id: string) {
-    const confirmed = window.confirm(
-      "Are you sure you want to cancel this appointment?"
-    );
-
-    if (!confirmed) return;
-
+    setCancelTarget(null);
     try {
       setCancellingId(id);
 
@@ -354,7 +350,7 @@ export default function MyAppointmentsPage() {
                       size="sm"
                       className="max-w-full text-destructive hover:text-destructive"
                       disabled={cancellingId === appointment._id}
-                      onClick={() => handleCancel(appointment._id)}
+                      onClick={() => setCancelTarget(appointment._id)}
                     >
                       {cancellingId === appointment._id ? (
                         <Loader2 className="size-4 animate-spin" />
@@ -371,6 +367,41 @@ export default function MyAppointmentsPage() {
           </div>
         ))}
       </div>
+
+      {/* Cancel confirmation dialog (no browser confirm()) */}
+      {cancelTarget && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-soft-lg">
+            <h2 className="font-display text-lg font-semibold">
+              Cancel this appointment?
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              This cannot be undone. The salon will be notified that you no
+              longer need this time slot.
+            </p>
+            <div className="mt-6 flex justify-end gap-2">
+              <Button
+                variant="outline"
+                className="rounded-full"
+                onClick={() => setCancelTarget(null)}
+              >
+                Keep it
+              </Button>
+              <Button
+                variant="destructive"
+                className="rounded-full"
+                disabled={cancellingId !== null}
+                onClick={() => handleCancel(cancelTarget)}
+              >
+                {cancellingId ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : null}
+                Yes, cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

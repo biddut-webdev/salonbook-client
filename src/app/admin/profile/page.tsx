@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -240,11 +240,11 @@ const AdminProfilePage = () => {
   if (!profile) {
     return (
       <div className="rounded-2xl border bg-white p-8 text-center">
-        <UserRound className="mx-auto mb-3 h-10 w-10 text-gray-400" />
-        <h2 className="text-lg font-semibold text-gray-900">
+        <UserRound className="mx-auto mb-3 h-10 w-10 text-muted-foreground/70" />
+        <h2 className="text-lg font-semibold text-foreground">
           Profile not found
         </h2>
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-muted-foreground">
           Please refresh the page or login again.
         </p>
       </div>
@@ -255,22 +255,22 @@ const AdminProfilePage = () => {
     <div className="space-y-6">
       {/* Page Heading */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-foreground">
           My Profile
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-muted-foreground">
           Manage your personal information and account details.
         </p>
       </div>
 
       {/* Profile Overview */}
-      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
         <div className="h-32 bg-gradient-to-r from-rose-700 via-rose-600 to-pink-500" />
 
         <div className="px-6 pb-6">
           <div className="-mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-4">
-              <div className="relative h-24 w-24 shrink-0 rounded-2xl border-4 border-white bg-gray-100 shadow-md">
+              <div className="relative h-24 w-24 shrink-0 rounded-2xl border-4 border-white bg-secondary shadow-md">
                 {formData.image ? (
                   <img
                     src={formData.image}
@@ -279,7 +279,7 @@ const AdminProfilePage = () => {
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center rounded-xl">
-                    <UserRound className="h-10 w-10 text-gray-400" />
+                    <UserRound className="h-10 w-10 text-muted-foreground/70" />
                   </div>
                 )}
 
@@ -299,10 +299,10 @@ const AdminProfilePage = () => {
               </div>
 
               <div className="pb-1">
-                <h2 className="text-xl font-bold text-gray-900">
+                <h2 className="text-xl font-bold text-foreground">
                   {profile.name}
                 </h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   {profile.email}
                 </p>
               </div>
@@ -328,12 +328,12 @@ const AdminProfilePage = () => {
       </div>
 
       {/* Profile Form */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-border bg-white p-6 shadow-sm">
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900">
+          <h2 className="text-lg font-bold text-foreground">
             Personal Information
           </h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Update your profile information below.
           </p>
         </div>
@@ -351,13 +351,13 @@ const AdminProfilePage = () => {
           <div className="space-y-2">
             <label
               htmlFor="name"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-foreground/80"
             >
               Full Name
             </label>
 
             <div className="relative">
-              <UserRound className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <UserRound className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-foreground/70" />
               <input
                 id="name"
                 name="name"
@@ -367,7 +367,7 @@ const AdminProfilePage = () => {
                 placeholder="Enter your name"
                 maxLength={60}
                 required
-                className="w-full rounded-xl border border-gray-200 py-3 pr-4 pl-11 text-sm outline-none transition focus:border-rose-500 focus:ring-2 focus:ring-rose-100"
+                className="w-full rounded-xl border border-border py-3 pr-4 pl-11 text-sm outline-none transition focus:border-rose-500 focus:ring-2 focus:ring-rose-100"
               />
             </div>
           </div>
@@ -376,23 +376,23 @@ const AdminProfilePage = () => {
           <div className="space-y-2">
             <label
               htmlFor="email"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-foreground/80"
             >
               Email Address
             </label>
 
             <div className="relative">
-              <Mail className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <Mail className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-foreground/70" />
               <input
                 id="email"
                 type="email"
                 value={profile.email}
                 readOnly
-                className="w-full cursor-not-allowed rounded-xl border border-gray-200 bg-gray-50 py-3 pr-4 pl-11 text-sm text-gray-500 outline-none"
+                className="w-full cursor-not-allowed rounded-xl border border-border bg-secondary/40 py-3 pr-4 pl-11 text-sm text-muted-foreground outline-none"
               />
             </div>
 
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-muted-foreground/70">
               Email address cannot be changed here.
             </p>
           </div>
@@ -401,13 +401,13 @@ const AdminProfilePage = () => {
           <div className="space-y-2">
             <label
               htmlFor="phone"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-foreground/80"
             >
               Phone Number
             </label>
 
             <div className="relative">
-              <Phone className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <Phone className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-foreground/70" />
               <input
                 id="phone"
                 name="phone"
@@ -416,7 +416,7 @@ const AdminProfilePage = () => {
                 onChange={handleChange}
                 placeholder="Enter your phone number"
                 maxLength={20}
-                className="w-full rounded-xl border border-gray-200 py-3 pr-4 pl-11 text-sm outline-none transition focus:border-rose-500 focus:ring-2 focus:ring-rose-100"
+                className="w-full rounded-xl border border-border py-3 pr-4 pl-11 text-sm outline-none transition focus:border-rose-500 focus:ring-2 focus:ring-rose-100"
               />
             </div>
           </div>
@@ -425,7 +425,7 @@ const AdminProfilePage = () => {
           <div className="space-y-2">
             <label
               htmlFor="role"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium text-foreground/80"
             >
               Account Role
             </label>
@@ -435,12 +435,12 @@ const AdminProfilePage = () => {
               type="text"
               value="Administrator"
               readOnly
-              className="w-full cursor-not-allowed rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-500 outline-none"
+              className="w-full cursor-not-allowed rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-muted-foreground outline-none"
             />
           </div>
 
           {/* Save Button */}
-          <div className="flex justify-end border-t border-gray-100 pt-5">
+          <div className="flex justify-end border-t border-border pt-5">
             <button
               type="submit"
               disabled={saving || uploading}

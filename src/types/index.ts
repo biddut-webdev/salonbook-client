@@ -25,6 +25,8 @@ export type AppointmentStatus =
   | "completed"
   | "cancelled";
 
+export type PaymentStatus = "unpaid" | "paid";
+
 // Appointment + the joined service/customer info the dashboards display.
 export type Appointment = {
   _id: string;
@@ -34,7 +36,7 @@ export type Appointment = {
   timeSlot: string;
   message?: string;
   servicePrice: number;
-  paymentStatus: "unpaid" | "paid";
+  paymentStatus: PaymentStatus;
   status: AppointmentStatus;
   createdAt: string;
   service?: {
