@@ -391,15 +391,15 @@ export default function ManageAppointmentsPage() {
 
                     {/* Price */}
                     <td className="px-5 py-4 font-medium text-foreground">
-                      à§³{appointment.servicePrice}
+                      ${appointment.servicePrice}
                     </td>
 
                     {/* Payment */}
                     <td className="px-5 py-4">
                       <span
                         className={`rounded-full px-3 py-1 text-xs font-medium ${appointment.paymentStatus === "paid"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-yellow-100 text-yellow-700"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
                           }`}
                       >
                         {appointment.paymentStatus}
