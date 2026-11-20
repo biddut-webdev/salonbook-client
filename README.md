@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SalonBook — Client
 
-## Getting Started
+SalonBook is a salon appointment booking platform. The client application is built with Next.js and provides the customer-facing website and role-based dashboard experience.
 
-First, run the development server:
+## Important Features
+
+- Responsive salon website and navigation
+- Browse salon services and view service details
+- Search services by name, filter by category, and sort by price
+- Customer and admin experiences with role-based dashboard navigation
+- Authentication with Better Auth, including Google sign-in when configured on the server
+- Appointment booking and appointment status views
+- Stripe Checkout payment flow for confirmed appointments
+- Profile management and image upload interface
+- Loading, error, and toast feedback states
+
+## Technology Stack
+
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- shadcn/ui components with Base UI
+- Better Auth React client and JWT client plugin
+- Lucide React
+- Sonner
+
+## Installation Instructions
+
+1. Clone the client repository:
+
+   ```bash
+   git clone https://github.com/biddut-webdev/salonbook-client.git
+   cd salonbook-client
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env.local` file in the project root and add the required environment variable:
+
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:5000
+   ```
+
+   Set `NEXT_PUBLIC_API_URL` to your deployed backend URL when using the production website.
+
+## How to Run the Project Locally
+
+Start the Next.js development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To create a production build:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+To run ESLint:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Required Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Add these names to `.env.local` (do not commit the file):
 
-## Deploy on Vercel
+- `NEXT_PUBLIC_API_URL`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Live Website
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Live Website: **Add the deployed Vercel URL here after deployment.**
+
+## GitHub Repositories
+
+- Client Repository: [salonbook-client](https://github.com/biddut-webdev/salonbook-client)
+- Server Repository: [salonbook-server](https://github.com/biddut-webdev/salonbook-server)
+
+## Security
+
+Never commit `.env.local`, API keys, access tokens, or other secret credentials.
