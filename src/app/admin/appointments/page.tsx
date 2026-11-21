@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search, CalendarDays, RefreshCw } from "lucide-react";
+import { Search, CalendarDays, RefreshCw, Eye, X } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 
@@ -54,10 +54,10 @@ const allowedTransitions: Record<
 };
 
 const statusColors: Record<AppointmentStatus, string> = {
-  pending: "bg-yellow-100 text-yellow-700",
-  confirmed: "bg-blue-100 text-blue-700",
-  completed: "bg-green-100 text-green-700",
-  cancelled: "bg-red-100 text-red-700",
+  pending: "bg-amber-100 text-amber-800",
+  confirmed: "bg-blue-100 text-blue-800",
+  completed: "bg-emerald-100 text-emerald-800",
+  cancelled: "bg-rose-100 text-rose-800",
 };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -66,6 +66,7 @@ export default function ManageAppointmentsPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [detail, setDetail] = useState<Appointment | null>(null);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -441,12 +442,120 @@ export default function ManageAppointmentsPage() {
                               ))}
                             </select>
                           )}
+
+                        <button
+                          type="button"
+                          onClick={() => setDetail(appointment)}
+                          className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                        >
+                          <Eye className="size-3.5" />
+                          Details
+                        </button>
                       </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* Appointment details dialog */}
+        {detail && (
+          <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4 backdrop-blur-sm">
+            <div className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-border bg-card p-6 shadow-soft-lg">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="eyebrow text-primary">Appointment details</p>
+                  <h2 className="font-display mt-1 text-xl font-semibold">
+                    {detail.service?.serviceName ?? "Service unavailable"}
+                  </h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setDetail(null)}
+                  className="rounded-full p-1.5 text-muted-foreground transition hover:bg-secondary hover:text-foreground"
+                  aria-label="Close details"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+
+              <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
+                <div>
+                  <dt className="text-xs text-muted-foreground">Customer</dt>
+                  <dd className="font-medium">{detail.customer?.name ?? "—"}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-muted-foreground">Email</dt>
+                  <dd className="truncate font-medium">
+                    {detail.customer?.email ?? "—"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-muted-foreground">Category</dt>
+                  <dd className="font-medium">{detail.service?.category ?? "—"}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-muted-foreground">Duration</dt>
+                  <dd className="font-medium">
+                    {detail.service?.duration
+                      ? `${detail.service.duration} min`
+                      : "—"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-muted-foreground">Date & time</dt>
+                  <dd className="font-medium">
+                    {formatDate(detail.appointmentDate)} · {detail.timeSlot}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-muted-foreground">Service price</dt>
+                  <dd className="font-medium">${detail.servicePrice}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-muted-foreground">Appointment status</dt>
+                  <dd className="mt-1">
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium capitalize ${statusColors[detail.status]}`}
+                    >
+                      {detail.status}
+                    </span>
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-muted-foreground">Payment status</dt>
+                  <dd className="mt-1">
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium capitalize ${detail.paymentStatus === "paid"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-muted text-muted-foreground"
+                        }`}
+                    >
+                      {detail.paymentStatus}
+                    </span>
+                  </dd>
+                </div>
+                <div className="sm:col-span-2">
+                  <dt className="text-xs text-muted-foreground">Requested on</dt>
+                  <dd className="font-medium">
+                    {new Date(detail.createdAt).toLocaleString("en-US", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </dd>
+                </div>
+                <div className="sm:col-span-2">
+                  <dt className="text-xs text-muted-foreground">
+                    Customer message
+                  </dt>
+                  <dd className="mt-1 rounded-xl bg-secondary/60 p-3 text-foreground">
+                    {detail.message?.trim() || "No message was provided."}
+                  </dd>
+                </div>
+              </dl>
+            </div>
           </div>
         )}
       </div>
