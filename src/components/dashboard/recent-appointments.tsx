@@ -117,7 +117,15 @@ export default function RecentAppointments() {
                   {formatDate(item.appointmentDate)} · {item.timeSlot}
                 </span>
                 <StatusBadge status={item.status} />
-                <StatusBadge status={item.paymentStatus} />
+                <span
+                  className={
+                    item.paymentStatus === "paid"
+                      ? "inline-flex rounded-full bg-emerald-100 px-2.5 py-0.5 font-medium text-emerald-800 capitalize"
+                      : "inline-flex rounded-full bg-muted px-2.5 py-0.5 font-medium text-muted-foreground capitalize"
+                  }
+                >
+                  {item.paymentStatus}
+                </span>
               </div>
             </li>
           ))}

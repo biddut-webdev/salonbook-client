@@ -47,11 +47,11 @@ type ApiResponse = {
 };
 
 function formatDate(value?: string) {
-  if (!value) return "â€”";
+  if (!value) return "—";
 
   const date = new Date(value);
 
-  if (Number.isNaN(date.getTime())) return "â€”";
+  if (Number.isNaN(date.getTime())) return "—";
 
   return date.toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -63,7 +63,7 @@ function formatDate(value?: string) {
 function formatAmount(amount: number, currency: string) {
   const value = Number(amount);
 
-  if (!Number.isFinite(value)) return "â€”";
+  if (!Number.isFinite(value)) return "—";
 
   return `${value.toLocaleString(undefined, {
     minimumFractionDigits: 2,
@@ -379,7 +379,7 @@ const TransactionsPage = () => {
                             {transaction.customer?.name || "Unknown Customer"}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {transaction.customer?.email || "â€”"}
+                            {transaction.customer?.email || "—"}
                           </p>
                         </div>
                       </div>
@@ -397,7 +397,7 @@ const TransactionsPage = () => {
                         {formatDate(transaction.appointment?.appointmentDate)}
                       </p>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {transaction.appointment?.timeSlot || "â€”"}
+                        {transaction.appointment?.timeSlot || "—"}
                       </p>
                     </td>
 
@@ -412,7 +412,7 @@ const TransactionsPage = () => {
                       >
                         {transaction.stripeSessionId
                           ? `${transaction.stripeSessionId.slice(0, 18)}...`
-                          : "â€”"}
+                          : "—"}
                       </span>
                     </td>
 
