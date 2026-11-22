@@ -247,54 +247,61 @@ const AdminServicesPage = () => {
   );
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-7 pb-10">
       {/* Page Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">
-            Manage Services
+          <p className="eyebrow text-primary">Catalogue</p>
+          <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            Manage services
           </h1>
 
-          <p className="mt-1 text-sm text-muted-foreground">
-            Manage all salon services from one place.
+          <p className="mt-2 text-sm text-muted-foreground">
+            Create, edit, deactivate or remove salon services.
           </p>
         </div>
 
         <Link
           href="/admin/services/new"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition hover:bg-primary/90"
         >
           <Plus size={18} />
-          Add New Service
+          Add new service
         </Link>
       </div>
 
       {/* Statistics */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">Total Services</p>
-          <h2 className="mt-2 text-2xl font-bold text-foreground">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+          <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+            Total services
+          </p>
+          <h2 className="font-display mt-2 text-3xl font-semibold text-foreground">
             {services.length}
           </h2>
         </div>
 
-        <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">Active Services</p>
-          <h2 className="mt-2 text-2xl font-bold text-green-600">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+          <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+            Active services
+          </p>
+          <h2 className="font-display mt-2 text-3xl font-semibold text-emerald-700">
             {services.filter((service) => service.status === "active").length}
           </h2>
         </div>
 
-        <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
-          <p className="text-sm text-muted-foreground">Inactive Services</p>
-          <h2 className="mt-2 text-2xl font-bold text-muted-foreground">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+          <p className="text-xs font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+            Inactive services
+          </p>
+          <h2 className="font-display mt-2 text-3xl font-semibold text-muted-foreground">
             {services.filter((service) => service.status === "inactive").length}
           </h2>
         </div>
       </div>
 
       {/* Search */}
-      <div className="rounded-2xl border border-border bg-white p-4 shadow-sm">
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
         <div className="relative max-w-md">
           <Search
             size={18}
@@ -306,7 +313,7 @@ const AdminServicesPage = () => {
             placeholder="Search services..."
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            className="w-full rounded-xl border border-border py-3 pl-10 pr-4 text-sm outline-none transition focus:border-violet-500"
+            className="w-full rounded-xl border border-border py-3 pl-10 pr-4 text-sm outline-none transition focus:border-primary"
           />
         </div>
       </div>
@@ -315,7 +322,7 @@ const AdminServicesPage = () => {
       {loading ? (
         <div className="flex min-h-60 items-center justify-center">
           <Loader2
-            className="animate-spin text-violet-600"
+            className="animate-spin text-primary"
             size={32}
           />
         </div>
@@ -331,7 +338,7 @@ const AdminServicesPage = () => {
           </button>
         </div>
       ) : filteredServices.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border bg-white py-16 text-center">
+        <div className="rounded-2xl border border-dashed border-border bg-card py-16 text-center">
           <Scissors
             className="mx-auto text-muted-foreground/70"
             size={36}
@@ -346,7 +353,7 @@ const AdminServicesPage = () => {
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[950px] text-left">
               <thead className="bg-secondary/40 text-xs uppercase text-muted-foreground">
@@ -377,7 +384,7 @@ const AdminServicesPage = () => {
                             className="h-11 w-11 rounded-lg object-cover"
                           />
                         ) : (
-                          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-violet-50 text-violet-600">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-secondary text-primary">
                             <Scissors size={20} />
                           </div>
                         )}
@@ -443,7 +450,7 @@ const AdminServicesPage = () => {
                       <div className="flex justify-end gap-2">
                         <Link
                           href={`/admin/services/${service._id}/edit`}
-                          className="rounded-lg border border-border p-2 text-muted-foreground transition hover:bg-violet-50 hover:text-violet-600"
+                          className="rounded-lg border border-border p-2 text-muted-foreground transition hover:bg-secondary hover:text-primary"
                           title="Edit service"
                         >
                           <Pencil size={17} />

@@ -12,4 +12,5 @@ export type SessionUser = {
   email: string;
   image?: string | null;
   role?: "customer" | "admin";
+  isBlocked?: boolean;
 };

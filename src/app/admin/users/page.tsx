@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Search, RefreshCw, Users, ShieldCheck, ShieldBan } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import StatCard from "@/components/dashboard/stat-card";
 
 type User = {
   _id: string;
@@ -157,68 +158,46 @@ export default function ManageUsersPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-10">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">
-          Manage Users
+        <p className="eyebrow text-primary">People</p>
+        <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          Manage customers
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          View, search and manage registered customers.
+        <p className="mt-2 text-sm text-muted-foreground">
+          View, search, block or unblock registered customer accounts.
         </p>
       </div>
 
       {/* Statistics */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Total Customers</p>
-              <h2 className="mt-2 text-2xl font-bold text-foreground">
-                {users.length}
-              </h2>
-            </div>
-            <div className="rounded-lg bg-blue-100 p-3 text-blue-600">
-              <Users size={22} />
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-xl border bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Active Customers</p>
-              <h2 className="mt-2 text-2xl font-bold text-foreground">
-                {users.filter((user) => !user.isBlocked).length}
-              </h2>
-            </div>
-            <div className="rounded-lg bg-green-100 p-3 text-green-600">
-              <ShieldCheck size={22} />
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-xl border bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Blocked Customers</p>
-              <h2 className="mt-2 text-2xl font-bold text-foreground">
-                {users.filter((user) => user.isBlocked).length}
-              </h2>
-            </div>
-            <div className="rounded-lg bg-red-100 p-3 text-red-600">
-              <ShieldBan size={22} />
-            </div>
-          </div>
-        </div>
+        <StatCard
+          label="Total customers"
+          value={users.length}
+          icon={Users}
+          hint="Everyone registered"
+        />
+        <StatCard
+          label="Active customers"
+          value={users.filter((user) => !user.isBlocked).length}
+          icon={ShieldCheck}
+          hint="Can book appointments"
+        />
+        <StatCard
+          label="Blocked customers"
+          value={users.filter((user) => user.isBlocked).length}
+          icon={ShieldBan}
+          hint="Access is restricted"
+        />
       </div>
 
       {/* Users Table */}
-      <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
-        <div className="flex flex-col gap-4 border-b p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
+        <div className="flex flex-col gap-4 border-b border-border p-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="font-semibold text-foreground">
-              All Customers
+            <h2 className="font-display text-lg font-semibold text-foreground">
+              All customers
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {filteredUsers.length} customers found

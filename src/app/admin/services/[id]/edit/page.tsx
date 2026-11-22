@@ -51,7 +51,7 @@ const initialForm: ServiceForm = {
 };
 
 const inputStyle =
-  "w-full rounded-xl border border-border bg-white px-4 py-3 text-sm text-foreground/80 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100";
+  "w-full rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground/80 outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/20";
 
 const labelStyle = "mb-2 block text-sm font-semibold text-foreground/80";
 
@@ -358,7 +358,7 @@ const EditServicePage = () => {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
-          <Loader2 className="mx-auto h-9 w-9 animate-spin text-violet-600" />
+          <Loader2 className="mx-auto h-9 w-9 animate-spin text-primary" />
           <p className="mt-3 text-sm text-muted-foreground">
             Loading service information...
           </p>
@@ -369,7 +369,7 @@ const EditServicePage = () => {
 
   if (pageError) {
     return (
-      <div className="rounded-2xl border border-red-100 bg-white p-8 text-center">
+      <div className="rounded-2xl border border-red-100 bg-card p-8 text-center">
         <h2 className="text-xl font-bold text-foreground">
           Unable to load service
         </h2>
@@ -377,7 +377,7 @@ const EditServicePage = () => {
         <button
           type="button"
           onClick={() => router.push("/admin/services")}
-          className="mt-5 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white hover:bg-violet-700"
+          className="mt-5 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary/90"
         >
           Back to Services
         </button>
@@ -392,14 +392,14 @@ const EditServicePage = () => {
         <button
           type="button"
           onClick={() => router.push("/admin/services")}
-          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-violet-600"
+          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-primary"
         >
           <ArrowLeft size={17} />
           Back to Services
         </button>
 
-        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
-          Edit Service
+        <h1 className="font-display mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">
+          Edit service
         </h1>
 
         <p className="mt-2 text-sm text-muted-foreground">
@@ -410,9 +410,9 @@ const EditServicePage = () => {
       {/* Edit Service Form */}
       <form
         onSubmit={handleSubmit}
-        className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
+        className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
       >
-        <div className="border-b border-border bg-violet-50/50 px-5 py-5 sm:px-8">
+        <div className="border-b border-border bg-secondary/60 px-5 py-5 sm:px-8">
           <h2 className="text-lg font-bold text-foreground">
             Service Information
           </h2>
@@ -568,9 +568,9 @@ const EditServicePage = () => {
               Upload New Image (Optional)
             </label>
 
-            <div className="rounded-xl border border-dashed border-violet-300 bg-violet-50/50 p-5">
+            <div className="rounded-xl border border-dashed border-border bg-secondary/60 p-5">
               <div className="flex flex-col items-center text-center">
-                <Upload className="mb-3 h-8 w-8 text-violet-600" />
+                <Upload className="mb-3 h-8 w-8 text-primary" />
                 <p className="text-sm font-semibold text-foreground/90">
                   Choose a new service image
                 </p>
@@ -584,12 +584,12 @@ const EditServicePage = () => {
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
                 onChange={handleImageChange}
-                className="mt-4 block w-full cursor-pointer rounded-lg border border-border bg-white text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-600 file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-violet-700"
+                className="mt-4 block w-full cursor-pointer rounded-lg border border-border bg-card text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:border-0 file:bg-primary file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-primary/90"
               />
             </div>
 
             {selectedImage && (
-              <div className="flex flex-col gap-3 rounded-xl border border-violet-100 bg-violet-50/50 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 rounded-xl border border-border bg-secondary/60 p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-foreground/90">
                     {selectedImage.name}
@@ -618,7 +618,7 @@ const EditServicePage = () => {
             type="button"
             onClick={() => router.push("/admin/services")}
             disabled={submitting}
-            className="rounded-xl border border-border bg-white px-6 py-3 text-sm font-semibold text-foreground/80 transition hover:bg-secondary disabled:opacity-60"
+            className="rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground/80 transition hover:bg-secondary disabled:opacity-60"
           >
             Cancel
           </button>
@@ -626,7 +626,7 @@ const EditServicePage = () => {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? (
               <>

@@ -131,14 +131,14 @@ const AdminStats = () => {
         return (
           <div
             key={card.title}
-            className="rounded-2xl border border-border bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            className="rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
           >
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-muted-foreground">
                 {card.title}
               </p>
 
-              <div className="rounded-xl bg-violet-50 p-3 text-violet-600">
+              <div className="rounded-xl bg-secondary p-3 text-primary">
                 <Icon size={21} />
               </div>
             </div>

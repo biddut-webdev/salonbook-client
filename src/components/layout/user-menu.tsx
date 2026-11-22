@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { LayoutDashboard, LogOut, ChevronDown } from "lucide-react";
+import { LayoutDashboard, LogOut, ChevronDown, User } from "lucide-react";
 import { authClient, type SessionUser } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { cn } from "cn";
@@ -71,7 +71,7 @@ export default function UserMenu({ user }: { user: SessionUser }) {
 
       {/* Dropdown: user name, dashboard, logout */}
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-xl border border-border bg-background shadow-lg">
+        <div className="absolute right-0 z-50 mt-2 w-60 overflow-hidden rounded-2xl border border-border bg-background shadow-soft-lg">
           <div className="border-b border-border px-4 py-3">
             <div className="flex items-center gap-3">
               <Avatar user={user} size="size-9" />
@@ -86,16 +86,24 @@ export default function UserMenu({ user }: { user: SessionUser }) {
 
           <div className="p-1.5">
             <Link
-              href="/dashboard"
+              href={user.role === "admin" ? "/admin" : "/dashboard"}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-muted"
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm hover:bg-secondary"
             >
-              <LayoutDashboard className="size-4" />
+              <LayoutDashboard className="size-4 text-primary" />
               Dashboard
+            </Link>
+            <Link
+              href={user.role === "admin" ? "/admin/profile" : "/dashboard/profile"}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm hover:bg-secondary"
+            >
+              <User className="size-4 text-primary" />
+              My Profile
             </Link>
             <Button
               variant="ghost"
-              className="w-full justify-start text-destructive hover:bg-destructive/10 hover:text-destructive"
+              className="w-full justify-start rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive"
               onClick={handleLogout}
             >
               <LogOut className="size-4" />

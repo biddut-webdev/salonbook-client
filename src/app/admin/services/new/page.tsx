@@ -210,17 +210,17 @@ const AddServicePage = () => {
       <div>
         <Link
           href="/admin/services"
-          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-violet-600"
+          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-primary"
         >
           <ArrowLeft size={17} />
           Back to Services
         </Link>
 
-        <h1 className="text-2xl font-bold text-foreground">
-          Add New Service
+        <h1 className="font-display mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">
+          Add new service
         </h1>
 
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-muted-foreground">
           Add a new salon service to your collection.
         </p>
       </div>
@@ -228,7 +228,7 @@ const AddServicePage = () => {
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-8"
+        className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8"
       >
         {/* Service Name */}
         <div className="space-y-2">
@@ -247,7 +247,7 @@ const AddServicePage = () => {
             value={formData.serviceName}
             onChange={handleChange}
             required
-            className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/20"
           />
         </div>
 
@@ -267,7 +267,7 @@ const AddServicePage = () => {
             onChange={handleChange}
             required
             disabled={categoriesLoading || categories.length === 0}
-            className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100 disabled:bg-secondary"
+            className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/20 disabled:bg-secondary"
           >
             <option value="">
               {categoriesLoading
@@ -306,7 +306,7 @@ const AddServicePage = () => {
             value={formData.description}
             onChange={handleChange}
             required
-            className="w-full resize-none rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            className="w-full resize-none rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/20"
           />
         </div>
 
@@ -330,7 +330,7 @@ const AddServicePage = () => {
               value={formData.price}
               onChange={handleChange}
               required
-              className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+              className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/20"
             />
           </div>
 
@@ -352,7 +352,7 @@ const AddServicePage = () => {
               value={formData.duration}
               onChange={handleChange}
               required
-              className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+              className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/20"
             />
           </div>
         </div>
@@ -373,7 +373,7 @@ const AddServicePage = () => {
             accept="image/png,image/jpeg,image/jpg,image/webp"
             onChange={handleImageChange}
             required={!selectedImage}
-            className="block w-full cursor-pointer rounded-xl border border-border bg-white text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-600 file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-violet-700"
+            className="block w-full cursor-pointer rounded-xl border border-border bg-card text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:border-0 file:bg-primary file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-primary/90"
           />
 
           <p className="text-xs text-muted-foreground">
@@ -381,7 +381,7 @@ const AddServicePage = () => {
           </p>
 
           {selectedImage && (
-            <div className="flex items-center justify-between rounded-xl border border-violet-100 bg-violet-50 px-4 py-3">
+            <div className="flex items-center justify-between rounded-xl border border-border bg-secondary px-4 py-3">
               <span className="truncate text-sm text-foreground/80">
                 {selectedImage.name}
               </span>
@@ -417,7 +417,7 @@ const AddServicePage = () => {
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/20"
           >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
@@ -436,7 +436,7 @@ const AddServicePage = () => {
           <button
             type="submit"
             disabled={loading || categoriesLoading || categories.length === 0}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? (
               <>

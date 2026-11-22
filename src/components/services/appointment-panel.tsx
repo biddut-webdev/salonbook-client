@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CalendarCheck, Clock } from "lucide-react";
 import { toast } from "sonner";
@@ -97,9 +98,9 @@ export default function AppointmentPanel({ service }: { service: Service }) {
   // Admins manage appointments, they never book as customers.
   if (user.role === "admin") {
     return (
-      <div className="rounded-2xl border border-border bg-card p-6">
-        <h2 className="text-lg font-semibold">Admin account</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-soft">
+        <h2 className="font-display text-xl font-semibold">Admin account</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Admins cannot submit appointment requests. Sign in with a customer
           account to book this service.
         </p>
@@ -108,10 +109,10 @@ export default function AppointmentPanel({ service }: { service: Service }) {
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6">
+    <div className="rounded-3xl border border-border bg-card p-6 shadow-soft">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Book an Appointment</h2>
-        <span className="text-lg font-bold text-primary">
+        <h2 className="font-display text-xl font-semibold">Book an appointment</h2>
+        <span className="font-display text-xl font-semibold text-primary">
           ${service.price}
         </span>
       </div>
@@ -121,11 +122,20 @@ export default function AppointmentPanel({ service }: { service: Service }) {
       </p>
 
       {booked && (
-        <div className="mt-4 flex items-start gap-2 rounded-lg bg-primary/10 p-3 text-sm text-primary">
+        <div className="mt-4 flex items-start gap-2 rounded-xl bg-primary/10 p-3 text-sm text-primary">
           <CalendarCheck className="mt-0.5 size-4 shrink-0" />
-          <span>
-            Request sent! You can track its status from your dashboard.
-          </span>
+          <div>
+            <p className="font-medium">Request sent!</p>
+            <p className="mt-0.5 text-primary/80">
+              You can track its status from your dashboard.
+            </p>
+            <Link
+              href="/dashboard/appointments"
+              className="mt-1 inline-block text-sm font-semibold underline underline-offset-4"
+            >
+              View my appointments
+            </Link>
+          </div>
         </div>
       )}
 

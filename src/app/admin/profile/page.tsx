@@ -239,7 +239,7 @@ const AdminProfilePage = () => {
 
   if (!profile) {
     return (
-      <div className="rounded-2xl border bg-white p-8 text-center">
+      <div className="rounded-2xl border bg-card p-8 text-center">
         <UserRound className="mx-auto mb-3 h-10 w-10 text-muted-foreground/70" />
         <h2 className="text-lg font-semibold text-foreground">
           Profile not found
@@ -252,25 +252,26 @@ const AdminProfilePage = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-10">
       {/* Page Heading */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">
-          My Profile
+        <p className="eyebrow text-primary">Account</p>
+        <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          My profile
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-muted-foreground">
           Manage your personal information and account details.
         </p>
       </div>
 
       {/* Profile Overview */}
-      <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-        <div className="h-32 bg-gradient-to-r from-rose-700 via-rose-600 to-pink-500" />
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
+        <div className="h-32 bg-gradient-to-r from-primary via-[oklch(0.62_0.13_25)] to-gold" />
 
         <div className="px-6 pb-6">
           <div className="-mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-4">
-              <div className="relative h-24 w-24 shrink-0 rounded-2xl border-4 border-white bg-secondary shadow-md">
+              <div className="relative h-24 w-24 shrink-0 rounded-2xl border-4 border-card bg-secondary shadow-soft">
                 {formData.image ? (
                   <img
                     src={formData.image}
@@ -328,7 +329,7 @@ const AdminProfilePage = () => {
       </div>
 
       {/* Profile Form */}
-      <div className="rounded-2xl border border-border bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="mb-6">
           <h2 className="text-lg font-bold text-foreground">
             Personal Information

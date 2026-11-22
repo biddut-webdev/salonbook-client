@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
+import { authClient, type SessionUser } from "@/lib/auth-client";
 import { isValidEmail } from "@/lib/validation";
 import { Button } from "@/components/ui/button";
 import GoogleButton from "@/components/auth/google-button";
@@ -26,10 +26,12 @@ function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Already signed in? Go straight to the dashboard.
+  // Already signed in? Go straight to the right dashboard.
   useEffect(() => {
     if (!isPending && session?.user) {
-      router.replace(next);
+      const role = (session.user as SessionUser).role;
+      const fallback = role === "admin" ? "/admin" : "/dashboard";
+      router.replace(next === "/dashboard" ? fallback : next);
     }
   }, [isPending, session, router, next]);
 
@@ -46,10 +48,11 @@ function SignInForm() {
     }
 
     setLoading(true);
-    const { error: signInError } = await authClient.signIn.email({
-      email,
-      password,
-    });
+    const { data: signInData, error: signInError } =
+      await authClient.signIn.email({
+        email,
+        password,
+      });
     setLoading(false);
 
     if (signInError) {
@@ -58,8 +61,11 @@ function SignInForm() {
     }
 
     toast.success("Signed in successfully. Welcome back!");
-    // The dashboard shows the right content for the user's role (admin/customer).
-    router.replace(next || "/dashboard");
+
+    // Send each role to its own dashboard (unless a specific page was requested).
+    const role = (signInData?.user as SessionUser | undefined)?.role;
+    const fallback = role === "admin" ? "/admin" : "/dashboard";
+    router.replace(next === "/dashboard" ? fallback : next);
   }
 
   return (

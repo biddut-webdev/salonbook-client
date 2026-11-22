@@ -4,6 +4,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient, type SessionUser } from "@/lib/auth-client";
+import BlockedAccount from "@/components/auth/blocked-account";
 import DashboardShell from "@/components/dashboard/dashboard-shell";
 
 export default function DashboardLayout({
@@ -46,6 +47,10 @@ export default function DashboardLayout({
         </div>
       </div>
     );
+  }
+
+  if (user.isBlocked) {
+    return <BlockedAccount />;
   }
 
   return <DashboardShell user={user}>{children}</DashboardShell>;

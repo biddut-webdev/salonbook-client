@@ -227,15 +227,18 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <div className="mx-auto max-w-4xl space-y-6 pb-10">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">My Profile</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="eyebrow text-primary">Account</p>
+        <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          My profile
+        </h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Manage your personal information and profile photo.
         </p>
       </div>
 
-      <div className="rounded-xl border bg-card p-5 sm:p-8">
+      <div className="rounded-3xl border border-border bg-card p-5 shadow-soft sm:p-8">
         <div className="flex flex-col items-center gap-4 border-b pb-6 sm:flex-row sm:items-center">
           <div className="relative">
             {profile.image ? (

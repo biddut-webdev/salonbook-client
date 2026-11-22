@@ -192,7 +192,7 @@ const TransactionsPage = () => {
       title: "Total Transactions",
       value: transactions.length,
       icon: CreditCard,
-      iconClass: "bg-violet-100 text-violet-600",
+      iconClass: "bg-secondary text-primary",
     },
     {
       title: "Successful Payments",
@@ -211,22 +211,23 @@ const TransactionsPage = () => {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3">
-        <Loader2 className="h-9 w-9 animate-spin text-violet-600" />
+        <Loader2 className="h-9 w-9 animate-spin text-primary" />
         <p className="text-sm text-muted-foreground">Loading transactions...</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-10">
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
+          <p className="eyebrow text-primary">Payments</p>
+          <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
             Transactions
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            View and monitor all customer payment records.
+          <p className="mt-2 text-sm text-muted-foreground">
+            Read-only payment records written by verified Stripe webhooks.
           </p>
         </div>
 
@@ -234,7 +235,7 @@ const TransactionsPage = () => {
           type="button"
           onClick={handleRefresh}
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-2.5 text-sm font-semibold text-foreground/80 transition hover:bg-secondary disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground/80 transition hover:bg-secondary disabled:opacity-50"
         >
           <RefreshCw className="h-4 w-4" />
           Refresh
@@ -249,7 +250,7 @@ const TransactionsPage = () => {
           return (
             <div
               key={stat.title}
-              className="rounded-2xl border border-border bg-white p-5 shadow-sm"
+              className="rounded-2xl border border-border bg-card p-5 shadow-sm"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -273,7 +274,7 @@ const TransactionsPage = () => {
       </div>
 
       {/* Transactions table */}
-      <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
         <div className="flex flex-col gap-4 border-b border-border p-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-bold text-foreground">
@@ -292,14 +293,14 @@ const TransactionsPage = () => {
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search customer, service..."
-                className="w-full rounded-xl border border-border py-2.5 pl-9 pr-3 text-sm outline-none transition focus:border-violet-500 sm:w-64"
+                className="w-full rounded-xl border border-border py-2.5 pl-9 pr-3 text-sm outline-none transition focus:border-primary sm:w-64"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(event) => setStatusFilter(event.target.value)}
-              className="rounded-xl border border-border bg-white px-3 py-2.5 text-sm outline-none focus:border-violet-500"
+              className="rounded-xl border border-border bg-card px-3 py-2.5 text-sm outline-none focus:border-primary"
             >
               <option value="all">All Payments</option>
               <option value="paid">Paid</option>
@@ -316,15 +317,15 @@ const TransactionsPage = () => {
             <button
               type="button"
               onClick={handleRefresh}
-              className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700"
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90"
             >
               Try Again
             </button>
           </div>
         ) : filteredTransactions.length === 0 ? (
           <div className="flex flex-col items-center justify-center px-5 py-16 text-center">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-violet-50">
-              <ReceiptText className="h-7 w-7 text-violet-500" />
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-secondary">
+              <ReceiptText className="h-7 w-7 text-primary" />
             </div>
 
             <h3 className="font-semibold text-foreground">
@@ -367,7 +368,7 @@ const TransactionsPage = () => {
                             className="h-10 w-10 rounded-full object-cover"
                           />
                         ) : (
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-100 text-sm font-bold text-violet-700">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-sm font-bold text-primary">
                             {transaction.customer?.name
                               ?.charAt(0)
                               ?.toUpperCase() || "C"}

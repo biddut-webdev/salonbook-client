@@ -35,10 +35,11 @@ async function ServiceResults({
 
   if (services.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-border p-10 text-center">
-        <p className="font-medium">No services found</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Try a different search word or category.
+      <div className="flex flex-col items-center rounded-3xl border border-dashed border-border bg-card px-6 py-16 text-center">
+        <p className="font-display text-xl font-semibold">No services found</p>
+        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+          Try a different search word or category — or clear the filters to see
+          the full menu.
         </p>
       </div>
     );
@@ -68,13 +69,19 @@ export default async function ServicesPage(props: PageProps<"/services">) {
   const categories = await getCategories().catch(() => []);
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-bold tracking-tight">Browse Services</h1>
-      <p className="mt-1 text-muted-foreground">
-        Explore our salon services and book the one you love.
-      </p>
+    <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6">
+      <div className="max-w-2xl">
+        <p className="eyebrow text-primary">The menu</p>
+        <h1 className="font-display mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
+          Browse services
+        </h1>
+        <p className="mt-3 text-muted-foreground">
+          Explore haircuts, colouring, skincare, makeup, nails and spa
+          treatments. Search by name, filter by category and sort by price.
+        </p>
+      </div>
 
-      <div className="mt-6">
+      <div className="mt-8 rounded-2xl border border-border bg-card p-4 shadow-soft">
         <Suspense fallback={null}>
           <ServiceFilters categories={categories} />
         </Suspense>

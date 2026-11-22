@@ -209,19 +209,20 @@ export default function ManageAppointmentsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-10">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">
-          Manage Appointments
+        <p className="eyebrow text-primary">Bookings</p>
+        <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          Manage appointments
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          View and manage all customer appointments.
+        <p className="mt-2 text-sm text-muted-foreground">
+          Review requests, confirm pending bookings and cancel when needed.
         </p>
       </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 gap-4 rounded-xl border bg-white p-4 shadow-sm md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 rounded-2xl border border-border bg-card p-4 shadow-soft md:grid-cols-3">
         {/* Search */}
         <div className="relative">
           <Search
@@ -270,7 +271,7 @@ export default function ManageAppointmentsPage() {
       </div>
 
       {/* Appointment Table */}
-      <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
+      <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div>
             <h2 className="font-semibold text-foreground">
